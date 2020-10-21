@@ -1,21 +1,22 @@
-type encoding
+type _ encoding
 type syntax_type
-type regex
+type _ regex
 type region
+
+exception Error of string
 
 external initialize : unit -> unit =
   "ocaml_onig_initialize"
-
-exception Error of string
 
 let () =
   Callback.register_exception "oniguruma exn" (Error "");
   initialize ()
 
 module Encoding = struct
-  type t = encoding
+  type ascii
+  type 'enc t = 'enc encoding
 
-  external create_ascii : unit -> t =
+  external create_ascii : unit -> ascii t =
     "ocaml_create_onig_encoding_ascii"
 
   let ascii = create_ascii ()
@@ -48,10 +49,10 @@ module SyntaxType = struct
 end
 
 external create
-  : string -> option_type array -> encoding -> syntax_type
-  -> (regex, string) result
+  : string -> option_type array -> 'enc encoding -> syntax_type
+  -> ('enc regex, string) result
   = "ocaml_onig_new"
 
 external search
-  : regex -> string -> int -> int -> unit array -> region option
+  : 'enc regex -> string -> int -> int -> unit array -> region option
   = "ocaml_onig_search"
