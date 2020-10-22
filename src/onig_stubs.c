@@ -217,3 +217,33 @@ CAMLprim value ocaml_onig_search(
     onig_error_code_to_str(err_buf, ret);
     caml_raise_with_string(*ocaml_onig_Error_exn, err_buf);
 }
+
+CAMLprim value ocaml_onig_num_regs(value region)
+{
+    CAMLparam1(region);
+    CAMLreturn(Val_int(Region_val(region)->num_regs));
+}
+
+CAMLprim value ocaml_onig_get_beg(value region_val, value idx_val)
+{
+    CAMLparam2(region_val, idx_val);
+    OnigRegion* region = Region_val(region_val);
+    int idx = Int_val(idx_val);
+    if(idx < region->num_regs) {
+        CAMLreturn(Val_int(region->beg[idx]));
+    }
+    caml_raise_with_string(
+        *ocaml_onig_Error_exn, "get_beg : Index out of bounds");   
+}
+
+CAMLprim value ocaml_onig_get_end(value region_val, value idx_val)
+{
+    CAMLparam2(region_val, idx_val);
+    OnigRegion* region = Region_val(region_val);
+    int idx = Int_val(idx_val);
+    if(idx < region->num_regs) {
+        CAMLreturn(Val_int(region->end[idx]));
+    }
+    caml_raise_with_string(
+        *ocaml_onig_Error_exn, "get_beg : Index out of bounds");   
+}

@@ -14,8 +14,15 @@ let test pat str =
       print_endline pat;
       print_endline str;
       assert false
-    | Some _ ->
-      ()
+    | Some region ->
+      let num_regs = Oniguruma.num_regs region in
+      print_endline (Int.to_string num_regs);
+      for i = 0 to num_regs - 1 do
+        print_string (Int.to_string (Oniguruma.get_beg region i));
+        print_string ":";
+        print_string (Int.to_string (Oniguruma.get_end region i));
+        print_newline ()
+      done
 
 let () =
   test "a|b" "a";
