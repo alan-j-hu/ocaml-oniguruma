@@ -14,12 +14,17 @@ let () =
 
 module Encoding = struct
   type ascii
+  type utf8
   type 'enc t = 'enc encoding
 
   external create_ascii : unit -> ascii t =
     "ocaml_create_onig_encoding_ascii"
 
+  external create_utf8 : unit -> utf8 t =
+    "ocaml_create_onig_encoding_utf8"
+
   let ascii = create_ascii ()
+  let utf8 = create_utf8 ()
 end
 
 type option_type =
@@ -59,6 +64,8 @@ external search
 
 external num_regs : region -> int = "ocaml_onig_num_regs"
 
+(** The string position is always returned in byte offsets. *)
 external get_beg : region -> int -> int = "ocaml_onig_get_beg"
 
+(** The string position is always returned in byte offsets. *)
 external get_end : region -> int -> int = "ocaml_onig_get_end"

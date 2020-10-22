@@ -62,6 +62,15 @@ CAMLprim value ocaml_create_onig_encoding_ascii(value unit)
     CAMLreturn(v);
 }
 
+CAMLprim value ocaml_create_onig_encoding_utf8(value unit)
+{
+    CAMLparam1(unit);
+    CAMLlocal1(v);
+    v = caml_alloc_small(1, Abstract_tag);
+    Store_field(v, 0, (value) ONIG_ENCODING_UTF8);
+    CAMLreturn(v);
+}
+
 CAMLprim value ocaml_create_onig_syntax_oniguruma(value unit)
 {
     CAMLparam1(unit);
@@ -233,7 +242,7 @@ CAMLprim value ocaml_onig_get_beg(value region_val, value idx_val)
         CAMLreturn(Val_int(region->beg[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "get_beg : Index out of bounds");   
+        *ocaml_onig_Error_exn, "get_beg: Index out of bounds");   
 }
 
 CAMLprim value ocaml_onig_get_end(value region_val, value idx_val)
@@ -245,5 +254,5 @@ CAMLprim value ocaml_onig_get_end(value region_val, value idx_val)
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "get_end : Index out of bounds");   
+        *ocaml_onig_Error_exn, "get_end: Index out of bounds");   
 }
