@@ -245,5 +245,5 @@ CAMLprim value ocaml_onig_get_end(value region_val, value idx_val)
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "get_beg : Index out of bounds");   
+        *ocaml_onig_Error_exn, "get_end : Index out of bounds");   
 }
