@@ -1,23 +1,19 @@
 name: install-test
 
 on:
-  push:
-    branches:
-      - master
+  push
 
 jobs:
-  deploy:
-    runs-on: ubuntu-18.04
+  build:
+    runs-on: ubuntu-20.04
     steps:
       - uses: actions/checkout@v2
-
-      - name: Set up OCaml
-        uses: avsm/setup-ocaml@v1
+      - uses: avsm/setup-ocaml@v1
         with:
           ocaml-version: 4.11.1
 
       - name: Build
         run: |
           eval $(opam env)
-          apt-get install libonig-dev
+          sudo apt-get install libonig-dev
           opam install . --with-test
