@@ -96,55 +96,81 @@ static struct custom_operations regex_ops = {
     .fixed_length = custom_fixed_length_default
 };
 
-OnigOptionType option_type(value v)
+OnigOptionType coption_type(value v)
 {
     switch(Int_val(v)) {
-    case 0: return ONIG_OPTION_NONE;
-    case 1: return ONIG_OPTION_SINGLELINE;
-    case 2: return ONIG_OPTION_MULTILINE;
-    case 3: return ONIG_OPTION_IGNORECASE;
-    case 4: return ONIG_OPTION_EXTEND;
-    case 5: return ONIG_OPTION_FIND_LONGEST;
-    case 6: return ONIG_OPTION_FIND_NOT_EMPTY;
-    case 7: return ONIG_OPTION_NEGATE_SINGLELINE;
-    case 8: return ONIG_OPTION_DONT_CAPTURE_GROUP;
-    case 9: return ONIG_OPTION_CAPTURE_GROUP;
-    case 10: return ONIG_OPTION_WORD_IS_ASCII;
-    case 11: return ONIG_OPTION_DIGIT_IS_ASCII;
-    case 12: return ONIG_OPTION_SPACE_IS_ASCII;
-    case 13: return ONIG_OPTION_POSIX_IS_ASCII;
-    case 14: return ONIG_OPTION_TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER;
-    case 15: return ONIG_OPTION_TEXT_SEGMENT_WORD;
+    case 0: return ONIG_OPTION_SINGLELINE;
+    case 1: return ONIG_OPTION_MULTILINE;
+    case 2: return ONIG_OPTION_IGNORECASE;
+    case 3: return ONIG_OPTION_EXTEND;
+    case 4: return ONIG_OPTION_FIND_LONGEST;
+    case 5: return ONIG_OPTION_FIND_NOT_EMPTY;
+    case 6: return ONIG_OPTION_NEGATE_SINGLELINE;
+    case 7: return ONIG_OPTION_DONT_CAPTURE_GROUP;
+    case 8: return ONIG_OPTION_CAPTURE_GROUP;
+    case 9: return ONIG_OPTION_WORD_IS_ASCII;
+    case 10: return ONIG_OPTION_DIGIT_IS_ASCII;
+    case 11: return ONIG_OPTION_SPACE_IS_ASCII;
+    case 12: return ONIG_OPTION_POSIX_IS_ASCII;
+    case 13: return ONIG_OPTION_TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER;
+    case 14: return ONIG_OPTION_TEXT_SEGMENT_WORD;
     }
 }
 
+OnigOptionType roption_type(value v)
+{
+    switch(Int_val(v)) {
+    case 0: return ONIG_OPTION_NOTBOL;
+    case 1: return ONIG_OPTION_NOTEOL;
+    }
+}
+
+CAMLprim value ocaml_onig_coptions(value array_val)
+{
+    CAMLparam1(array_val);
+    OnigOptionType options = ONIG_OPTION_NONE;
+    int flag_count = Wosize_val(array_val);
+    for(int i = 0; i < flag_count; ++i) {
+        const value elem = Field(array_val, i);
+        const OnigOptionType flag = coption_type(elem);
+        options |= flag;
+    }
+    CAMLreturn (Val_int(options));
+}
+
+CAMLprim value ocaml_onig_roptions(value array_val)
+{
+    CAMLparam1(array_val);
+    OnigOptionType options = ONIG_OPTION_NONE;
+    int flag_count = Wosize_val(array_val);
+    for(int i = 0; i < flag_count; ++i) {
+        const value elem = Field(array_val, i);
+        const OnigOptionType flag = roption_type(elem);
+        options |= flag;
+    }
+    CAMLreturn (Val_int(options));
+}
+
+
 CAMLprim value ocaml_onig_new(
     value pattern_val,
-    value array_val,
+    value options,
     value enc,
     value syntax)
 {
-    CAMLparam4(pattern_val, array_val, enc, syntax);
+    CAMLparam4(pattern_val, options, enc, syntax);
     CAMLlocal3(regex_val, error, result);
 
     regex_t* regex;
     const UChar* pattern = String_val(pattern_val);
     const uintnat pattern_length = caml_string_length(pattern_val);
 
-    OnigOptionType option = 0;
-    int flag_count = Wosize_val(array_val);
-    for(int i = 0; i < flag_count; ++i) {
-        const value elem = Field(array_val, i);
-        const OnigOptionType flag = option_type(elem);
-        option |= flag;
-    }
-
     OnigErrorInfo err_info;
     const int err_code = onig_new(
         &regex,
         pattern,
         pattern + pattern_length,
-        option,
+        Int_val(options),
         *((OnigEncoding*) Data_abstract_val(enc)),
         *((OnigSyntaxType**) Data_abstract_val(syntax)),
         &err_info);
@@ -211,7 +237,7 @@ CAMLprim value ocaml_onig_search(
         string + search_start,
         string + search_end,
         region,
-        option);
+        Int_val(options_val));
     if(ret >= 0) {
         /* option_val : region option */
         /* Must store all fields immediately after small allocation! */

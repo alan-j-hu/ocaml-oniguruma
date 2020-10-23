@@ -27,8 +27,7 @@ module Encoding = struct
   let utf8 = create_utf8 ()
 end
 
-type option_type =
-  | OPTION_NONE
+type coption =
   | OPTION_SINGLELINE
   | OPTION_MULTILINE
   | OPTION_IGNORECASE
@@ -45,6 +44,18 @@ type option_type =
   | OPTION_TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
   | OPTION_TEXT_SEGMENT_WORD
 
+type icoption
+
+external coptions : coption array -> icoption = "ocaml_onig_coptions"
+
+type roption =
+  | OPTION_NOT_BEGIN_STRING
+  | OPTION_NOT_END_STRING
+
+type iroption
+
+external roptions : roption array -> iroption = "ocaml_onig_roptions"
+
 module SyntaxType = struct
   type t = syntax_type
   external create_oniguruma : unit -> t =
@@ -54,12 +65,12 @@ module SyntaxType = struct
 end
 
 external create
-  : string -> option_type array -> 'enc encoding -> syntax_type
+  : string -> icoption -> 'enc encoding -> syntax_type
   -> ('enc regex, string) result
   = "ocaml_onig_new"
 
 external search
-  : 'enc regex -> string -> int -> int -> unit array -> region option
+  : 'enc regex -> string -> int -> int -> iroption -> region option
   = "ocaml_onig_search"
 
 external num_regs : region -> int = "ocaml_onig_num_regs"

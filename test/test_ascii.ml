@@ -1,7 +1,10 @@
+let coptions = Oniguruma.coptions [||]
+let roptions = Oniguruma.roptions [||]
+
 let test pat str =
   match
     Oniguruma.create
-      pat [||] Oniguruma.Encoding.ascii Oniguruma.SyntaxType.oniguruma
+      pat coptions Oniguruma.Encoding.ascii Oniguruma.SyntaxType.oniguruma
   with
   | Error err ->
     print_endline pat;
@@ -9,7 +12,7 @@ let test pat str =
     print_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.search r str 0 (String.length str) [||] with
+    match Oniguruma.search r str 0 (String.length str) roptions with
     | None ->
       print_endline pat;
       print_endline str;
