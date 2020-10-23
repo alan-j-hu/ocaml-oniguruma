@@ -19,4 +19,5 @@ jobs:
       - name: Build
         run: |
           eval $(opam env)
+          apt-get install libonig-dev
           opam install . --with-test

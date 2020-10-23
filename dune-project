@@ -12,3 +12,8 @@
   (name oniguruma)
   (synopsis "Oniguruma bindings")
   (description "Oniguruma bindings"))
+
+(package
+  (name conf-oniguruma)
+  (synopsis "Oniguruma bindings")
+  (description "Oniguruma bindings"))
