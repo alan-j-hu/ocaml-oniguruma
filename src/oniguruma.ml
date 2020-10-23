@@ -5,12 +5,14 @@ type region
 
 exception Error of string
 
-external initialize : unit -> unit =
-  "ocaml_onig_initialize"
+external initialize : unit -> unit = "ocaml_onig_initialize"
+
+external cleanup : unit -> unit = "ocaml_onig_end"
 
 let () =
   Callback.register_exception "oniguruma exn" (Error "");
-  initialize ()
+  initialize ();
+  at_exit cleanup
 
 module Encoding = struct
   type ascii

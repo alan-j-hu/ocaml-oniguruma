@@ -53,6 +53,13 @@ CAMLprim value ocaml_onig_initialize(value unit)
     CAMLreturn(Val_unit);
 }
 
+CAMLprim value ocaml_onig_end(value unit)
+{
+    CAMLparam1(unit);
+    onig_end();
+    CAMLreturn(unit);
+}
+
 CAMLprim value ocaml_create_onig_encoding_ascii(value unit)
 {
     CAMLparam1(unit);
