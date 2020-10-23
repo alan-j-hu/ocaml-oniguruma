@@ -1,0 +1,22 @@
+name: install-test
+
+on:
+  push:
+    branches:
+      - master
+
+jobs:
+  deploy:
+    runs-on: ubuntu-18.04
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Set up OCaml
+        uses: avsm/setup-ocaml@v1
+        with:
+          ocaml-version: 4.11.1
+
+      - name: Build
+        run: |
+          eval $(opam env)
+          opam install . --with-test
