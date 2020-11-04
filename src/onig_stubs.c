@@ -232,8 +232,6 @@ CAMLprim value ocaml_onig_search(
     const int search_start = Int_val(search_start_val);
     const int search_end = Int_val(search_end_val);
 
-    int option = ONIG_OPTION_CAPTURE_GROUP;
-
     OnigRegion* region = onig_region_new();
     region_val = caml_alloc_custom(&region_ops, sizeof(OnigRegion*), 0, 1);
     Region_val(region_val) = region;
@@ -243,6 +241,45 @@ CAMLprim value ocaml_onig_search(
         string + string_length,
         string + search_start,
         string + search_end,
+        region,
+        Int_val(options_val));
+    if(ret >= 0) {
+        /* option_val : region option */
+        /* Must store all fields immediately after small allocation! */
+        option_val = caml_alloc_small(1, 0);
+        Store_field(option_val, 0, region_val);
+        CAMLreturn(option_val);
+    }
+    if(ret == ONIG_MISMATCH) {
+        CAMLreturn(Val_int(0));
+    }
+    UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
+    onig_error_code_to_str(err_buf, ret);
+    caml_raise_with_string(*ocaml_onig_Error_exn, err_buf);
+}
+
+CAMLprim value ocaml_onig_match(
+    value regex_val,
+    value string_val,
+    value search_at_val,
+    value options_val)
+{
+    CAMLparam4(regex_val, string_val, search_at_val, options_val);
+    CAMLlocal2(region_val, option_val);
+
+    regex_t* reg = Regex_val(regex_val);
+    const UChar* string = String_val(string_val);
+    const uintnat string_length = caml_string_length(string_val);
+    const int search_at = Int_val(search_at_val);
+
+    OnigRegion* region = onig_region_new();
+    region_val = caml_alloc_custom(&region_ops, sizeof(OnigRegion*), 0, 1);
+    Region_val(region_val) = region;
+    int ret = onig_match(
+        reg,
+        string,
+        string + string_length,
+        string + search_at,
         region,
         Int_val(options_val));
     if(ret >= 0) {

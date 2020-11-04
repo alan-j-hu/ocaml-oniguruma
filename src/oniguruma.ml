@@ -75,6 +75,10 @@ external search
   : 'enc regex -> string -> int -> int -> iroption -> region option
   = "ocaml_onig_search"
 
+external match_
+  : 'enc regex -> string -> int -> iroption -> region option
+  = "ocaml_onig_match"
+
 external num_regs : region -> int = "ocaml_onig_num_regs"
 
 external get_beg : region -> int -> int = "ocaml_onig_get_beg"
