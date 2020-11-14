@@ -108,10 +108,10 @@ external match_
 external num_regs : region -> int = "ocaml_onig_num_regs"
 (** [num_regs region] gets the number of regions. *)
 
-external get_beg : region -> int -> int = "ocaml_onig_get_beg"
-(** [get_beg region idx] gets the string position of the region at the given
+external reg_beg : region -> int -> int = "ocaml_onig_reg_beg"
+(** [reg_beg region idx] gets the string position of the region at the given
     index. The string position is an offset in bytes. *)
 
-external get_end : region -> int -> int = "ocaml_onig_get_end"
-(** [get_end region idx] gets the string position of the region at the given
+external reg_end : region -> int -> int = "ocaml_onig_reg_end"
+(** [reg_end region idx] gets the string position of the region at the given
     index. The string position is an offset in bytes. *)

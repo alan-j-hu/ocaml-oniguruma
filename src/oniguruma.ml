@@ -81,6 +81,6 @@ external match_
 
 external num_regs : region -> int = "ocaml_onig_num_regs"
 
-external get_beg : region -> int -> int = "ocaml_onig_get_beg"
+external reg_beg : region -> int -> int = "ocaml_onig_reg_beg"
 
-external get_end : region -> int -> int = "ocaml_onig_get_end"
+external reg_end : region -> int -> int = "ocaml_onig_reg_end"
