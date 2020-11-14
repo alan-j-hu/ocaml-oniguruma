@@ -1,3 +1,9 @@
+(library
+ (name test_util)
+ (modules test_util)
+ (libraries oniguruma))
+
 (tests
-  (names test_ascii test_utf8)
-  (libraries oniguruma))
+ (names test_ascii test_utf8)
+ (modules test_ascii test_utf8)
+ (libraries oniguruma test_util))
