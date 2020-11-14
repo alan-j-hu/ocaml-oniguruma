@@ -9,6 +9,8 @@
 (name oniguruma)
 
 (package
-  (name oniguruma)
-  (synopsis "Oniguruma bindings")
-  (description "Oniguruma bindings"))
+ (name oniguruma)
+ (synopsis "Oniguruma bindings")
+ (description "Oniguruma bindings")
+ (depends
+  (ocaml (>= 4.08))))

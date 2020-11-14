@@ -11,6 +11,7 @@ doc: "https://alan-j-hu.github.io/ocaml-oniguruma/"
 bug-reports: "https://github.com/alan-j-hu/ocaml-oniguruma/issues"
 depends: [
   "dune" {>= "2.7"}
+  "ocaml" {>= "4.08"}
   "odoc" {with-doc}
 ]
 build: [
