@@ -33,21 +33,21 @@ end
 (** Character encodings. *)
 
 type coption =
-  | OPTION_SINGLELINE
-  | OPTION_MULTILINE
-  | OPTION_IGNORECASE
-  | OPTION_EXTEND
-  | OPTION_FIND_LONGEST
-  | OPTION_FIND_NOT_EMPTY
-  | OPTION_NEGATE_SINGLELINE
-  | OPTION_DONT_CAPTURE_GROUP
-  | OPTION_CAPTURE_GROUP
-  | OPTION_WORD_IS_ASCII
-  | OPTION_DIGIT_IS_ASCII
-  | OPTION_SPACE_IS_ASCII
-  | OPTION_POSIX_IS_ASCII
-  | OPTION_TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
-  | OPTION_TEXT_SEGMENT_WORD
+  | SINGLELINE
+  | MULTILINE
+  | IGNORECASE
+  | EXTEND
+  | FIND_LONGEST
+  | FIND_NOT_EMPTY
+  | NEGATE_SINGLELINE
+  | DONT_CAPTURE_GROUP
+  | CAPTURE_GROUP
+  | WORD_IS_ASCII
+  | DIGIT_IS_ASCII
+  | SPACE_IS_ASCII
+  | POSIX_IS_ASCII
+  | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
+  | TEXT_SEGMENT_WORD
 
 (** Compile-time options. *)
 
@@ -58,8 +58,8 @@ external coptions : coption array -> icoption = "ocaml_onig_coptions"
 (** Convert the compile-time options to their internal representation. *)
 
 type roption =
-  | OPTION_NOT_BEGIN_STRING
-  | OPTION_NOT_END_STRING
+  | NOT_BEGIN_STRING
+  | NOT_END_STRING
 
 (** Runtime options. *)
 
