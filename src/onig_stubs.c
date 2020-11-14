@@ -142,7 +142,7 @@ CAMLprim value ocaml_onig_coptions(value array_val)
         const OnigOptionType flag = coption_type(elem);
         options |= flag;
     }
-    CAMLreturn (Val_int(options));
+    CAMLreturn(Val_int(options));
 }
 
 CAMLprim value ocaml_onig_roptions(value array_val)
@@ -155,7 +155,7 @@ CAMLprim value ocaml_onig_roptions(value array_val)
         const OnigOptionType flag = roption_type(elem);
         options |= flag;
     }
-    CAMLreturn (Val_int(options));
+    CAMLreturn(Val_int(options));
 }
 
 
