@@ -297,7 +297,7 @@ CAMLprim value ocaml_onig_match(
     caml_raise_with_string(*ocaml_onig_Error_exn, err_buf);
 }
 
-CAMLprim value ocaml_onig_num_regs(value region)
+CAMLprim value ocaml_onig_region_length(value region)
 {
     CAMLparam1(region);
     CAMLreturn(Val_int(Region_val(region)->num_regs));

@@ -1,16 +1,6 @@
-type _ encoding
-(** A character encoding. The phantom type parameter represents the encoding.
- *)
-
-type syntax_type
-(** The regular expression dialect. *)
-
-type _ regex
+type _ t
 (** A regular expression. The phantom type parameter represents the encoding,
     so that regular expressions for different encodings may not be mixed. *)
-
-type region
-(** The regions returned by a search or match. *)
 
 exception Error of string
 
@@ -21,7 +11,7 @@ module Encoding : sig
   type utf8
   (** A phantom type representing UTF-8. *)
 
-  type 'enc t = 'enc encoding
+  type _ t
   (** A character encoding, indexed by a phantom type parameter. *)
 
   val ascii : ascii t
@@ -69,21 +59,37 @@ type iroption
 external roptions : roption array -> iroption = "ocaml_onig_roptions"
 (** Convert the runtime options to their internal representation. *)
 
-module SyntaxType : sig
-  type t = syntax_type
+module Syntax : sig
+  type t
+  (** The regular expression dialect. *)
 
   val oniguruma : t
 end
 (** The syntax type. *)
 
+module Region : sig
+  type t
+  (** The regions returned by a search or match. *)
+
+  external length : t -> int = "ocaml_onig_region_length"
+  (** [length region] gets the number of regions. *)
+
+  external reg_beg : t -> int -> int = "ocaml_onig_reg_beg"
+  (** [reg_beg region idx] gets the string position of the region at the given
+      index. The string position is an offset in bytes. *)
+
+  external reg_end : t -> int -> int = "ocaml_onig_reg_end"
+  (** [reg_end region idx] gets the string position of the region at the given
+      index. The string position is an offset in bytes. *)
+end
+
 external create
-  : string -> icoption -> 'enc encoding -> syntax_type
-  -> ('enc regex, string) result
+  : string -> icoption -> 'enc Encoding.t -> Syntax.t
+  -> ('enc t, string) result
   = "ocaml_onig_new"
 (** [create pattern options encoding syntax] creates a regex. *)
 
-external search
-  : 'enc regex -> string -> int -> int -> iroption -> region option
+external search : 'enc t -> string -> int -> int -> iroption -> Region.t option
   = "ocaml_onig_search"
 (** [search regex string start range option] searches
     [String.sub string start range] for [regex].
@@ -94,8 +100,7 @@ external search
     @param range The string position to stop searching at, as a byte offset
     @param option Search options *)
 
-external match_
-  : 'enc regex -> string -> int -> iroption -> region option
+external match_ : 'enc t -> string -> int -> iroption -> Region.t option
   = "ocaml_onig_match"
 (** [match_ regex string pos options] matches [regex] against [string] at
     position [pos].
@@ -104,14 +109,3 @@ external match_
     @param string The string to match against
     @param pos The position of the string to match at, as a byte offset
     @param options Match options *)
-
-external num_regs : region -> int = "ocaml_onig_num_regs"
-(** [num_regs region] gets the number of regions. *)
-
-external reg_beg : region -> int -> int = "ocaml_onig_reg_beg"
-(** [reg_beg region idx] gets the string position of the region at the given
-    index. The string position is an offset in bytes. *)
-
-external reg_end : region -> int -> int = "ocaml_onig_reg_end"
-(** [reg_end region idx] gets the string position of the region at the given
-    index. The string position is an offset in bytes. *)

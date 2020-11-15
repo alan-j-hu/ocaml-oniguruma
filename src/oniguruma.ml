@@ -1,7 +1,4 @@
-type _ encoding
-type syntax_type
-type _ regex
-type region
+type _ t
 
 exception Error of string
 
@@ -17,7 +14,7 @@ let () =
 module Encoding = struct
   type ascii
   type utf8
-  type 'enc t = 'enc encoding
+  type _ t
 
   external create_ascii : unit -> ascii t =
     "ocaml_create_onig_encoding_ascii"
@@ -58,29 +55,32 @@ type iroption
 
 external roptions : roption array -> iroption = "ocaml_onig_roptions"
 
-module SyntaxType = struct
-  type t = syntax_type
+module Syntax = struct
+  type t
+
   external create_oniguruma : unit -> t =
     "ocaml_create_onig_syntax_oniguruma"
 
   let oniguruma = create_oniguruma ()
 end
 
+module Region = struct
+  type t
+
+  external length : t -> int = "ocaml_onig_region_length"
+
+  external reg_beg : t -> int -> int = "ocaml_onig_reg_beg"
+
+  external reg_end : t -> int -> int = "ocaml_onig_reg_end"
+end
+
 external create
-  : string -> icoption -> 'enc encoding -> syntax_type
-  -> ('enc regex, string) result
+  : string -> icoption -> 'enc Encoding.t -> Syntax.t
+  -> ('enc t, string) result
   = "ocaml_onig_new"
 
-external search
-  : 'enc regex -> string -> int -> int -> iroption -> region option
+external search : 'enc t -> string -> int -> int -> iroption -> Region.t option
   = "ocaml_onig_search"
 
-external match_
-  : 'enc regex -> string -> int -> iroption -> region option
+external match_ : 'enc t -> string -> int -> iroption -> Region.t option
   = "ocaml_onig_match"
-
-external num_regs : region -> int = "ocaml_onig_num_regs"
-
-external reg_beg : region -> int -> int = "ocaml_onig_reg_beg"
-
-external reg_end : region -> int -> int = "ocaml_onig_reg_end"
