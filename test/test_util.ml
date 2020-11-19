@@ -29,6 +29,18 @@ let test_search enc pat str exp_regs =
     | Some region ->
       check_against region exp_regs
 
+let neg_test_search enc pat str =
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  | Error err ->
+    print_endline pat;
+    print_endline str;
+    print_endline err;
+    assert false
+  | Ok r ->
+    match Oniguruma.search r str 0 (String.length str) roptions with
+    | None -> ()
+    | Some _ -> assert false
+
 let test_match enc pat n str exp_regs =
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
@@ -44,3 +56,15 @@ let test_match enc pat n str exp_regs =
       assert false
     | Some region ->
       check_against region exp_regs
+
+let neg_test_match enc pat n str =
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  | Error err ->
+    print_endline pat;
+    print_endline str;
+    print_endline err;
+    assert false
+  | Ok r ->
+    match Oniguruma.match_ r str n roptions with
+    | None -> ()
+    | Some _ -> assert false
