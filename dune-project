@@ -13,4 +13,5 @@
  (synopsis "Oniguruma bindings")
  (description "Oniguruma bindings")
  (depends
+  (conf-oniguruma (= 1))
   (ocaml (>= 4.08))))
