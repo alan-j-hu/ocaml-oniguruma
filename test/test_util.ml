@@ -24,15 +24,15 @@ let test_search coptions roptions enc pat str exp_regs =
   let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
-    print_endline pat;
-    print_endline str;
-    print_endline err;
+    prerr_endline pat;
+    prerr_endline str;
+    prerr_endline err;
     assert false
   | Ok r ->
     match Oniguruma.search r str 0 (String.length str) roptions with
     | None ->
-      print_endline pat;
-      print_endline str;
+      prerr_endline pat;
+      prerr_endline str;
       assert false
     | Some region ->
       check_against region exp_regs
@@ -42,9 +42,9 @@ let neg_test_search coptions roptions enc pat str =
   let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
-    print_endline pat;
-    print_endline str;
-    print_endline err;
+    prerr_endline pat;
+    prerr_endline str;
+    prerr_endline err;
     assert false
   | Ok r ->
     match Oniguruma.search r str 0 (String.length str) roptions with
@@ -56,9 +56,9 @@ let test_search_out_of_bounds coptions roptions enc pat str s_beg s_end =
   let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
-    print_endline pat;
-    print_endline str;
-    print_endline err;
+    prerr_endline pat;
+    prerr_endline str;
+    prerr_endline err;
     assert false
   | Ok r ->
     match Oniguruma.search r str s_beg s_end roptions with
@@ -70,15 +70,15 @@ let test_match coptions roptions enc pat n str exp_regs =
   let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
-    print_endline pat;
-    print_endline str;
-    print_endline err;
+    prerr_endline pat;
+    prerr_endline str;
+    prerr_endline err;
     assert false
   | Ok r ->
     match Oniguruma.match_ r str n roptions with
     | None ->
-      print_endline pat;
-      print_endline str;
+      prerr_endline pat;
+      prerr_endline str;
       assert false
     | Some region ->
       check_against region exp_regs
@@ -88,9 +88,9 @@ let neg_test_match coptions roptions enc pat n str =
   let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
-    print_endline pat;
-    print_endline str;
-    print_endline err;
+    prerr_endline pat;
+    prerr_endline str;
+    prerr_endline err;
     assert false
   | Ok r ->
     match Oniguruma.match_ r str n roptions with
@@ -102,9 +102,9 @@ let test_match_out_of_bounds coptions roptions enc pat str pos =
   let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
-    print_endline pat;
-    print_endline str;
-    print_endline err;
+    prerr_endline pat;
+    prerr_endline str;
+    prerr_endline err;
     assert false
   | Ok r ->
     match Oniguruma.match_ r str pos roptions with
