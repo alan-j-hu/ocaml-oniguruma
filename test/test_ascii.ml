@@ -22,4 +22,5 @@ let () =
   neg_test_search "a(a|b)" "b";
   test_match "a" 0 "a" [0, 1];
   test_match "a" 1 "ba" [1, 2];
+  test_match "b" 1 "abc" [1, 2];
   neg_test_match "a" 1 "a"

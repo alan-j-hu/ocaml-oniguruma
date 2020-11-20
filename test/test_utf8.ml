@@ -13,4 +13,5 @@ let () =
   neg_test_search "あ" "a";
   neg_test_search "a" "あ";
   test_match "a" 3 "あa" [3, 4];
+  test_match "い" 3 "あいう" [3, 6];
   neg_test_match "a" 1 "あa"
