@@ -25,6 +25,8 @@ let () =
   test_search "a*b" "aab" [0, 3];
   test_search "a(a*b)b" "aaaabb" [0, 6; 1, 5];
   test_search "(a)|(b)" "b" [0, 1; -1, -1; 0, 1];
+  test_search "ml" "OCaml" [3, 5];
+  test_search "ML" "SML" [1, 3];
   neg_test_search "b" "a";
   neg_test_search "a+" "";
   neg_test_search "a(a|b)" "b";

@@ -14,6 +14,10 @@ let () =
   test_search_ascii [|IGNORECASE|] [||] "a" "A" [0, 1];
   neg_test_search_ascii [||] [||] "a" "A";
   test_search_ascii [|IGNORECASE|] [||] "A" "a" [0, 1];
+  test_search_ascii [|IGNORECASE|] [||] "ML" "OCaml" [3, 5];
+  test_search_ascii [|IGNORECASE|] [||] "ml" "OCaml" [3, 5];
+  test_search_ascii [|IGNORECASE|] [||] "ML" "SML" [1, 3];
+  test_search_ascii [|IGNORECASE|] [||] "ml" "SML" [1, 3];
   neg_test_search_ascii [||] [||] "A" "a";
   test_search_utf8 [|IGNORECASE|] [||] "a" "A" [0, 1];
   neg_test_search_utf8 [||] [||] "a" "A";
