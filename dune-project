@@ -3,7 +3,7 @@
 (version 0.1.0)
 (authors "Alan Hu <hu.ala@northeastern.edu>")
 (maintainers "Alan Hu <hu.ala@northeastern.edu>")
-(license MIT)
+(license BSD-2-Clause)
 (documentation https://alan-j-hu.github.io/ocaml-oniguruma/)
 (source (github alan-j-hu/ocaml-oniguruma))
 (name oniguruma)

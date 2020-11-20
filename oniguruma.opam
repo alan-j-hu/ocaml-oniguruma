@@ -5,7 +5,7 @@ synopsis: "Oniguruma bindings"
 description: "Oniguruma bindings"
 maintainer: ["Alan Hu <hu.ala@northeastern.edu>"]
 authors: ["Alan Hu <hu.ala@northeastern.edu>"]
-license: "MIT"
+license: "BSD-2-Clause"
 homepage: "https://github.com/alan-j-hu/ocaml-oniguruma"
 doc: "https://alan-j-hu.github.io/ocaml-oniguruma/"
 bug-reports: "https://github.com/alan-j-hu/ocaml-oniguruma/issues"
