@@ -26,34 +26,36 @@ module Encoding = struct
   let utf8 = create_utf8 ()
 end
 
-type coption =
-  | SINGLELINE
-  | MULTILINE
-  | IGNORECASE
-  | EXTEND
-  | FIND_LONGEST
-  | FIND_NOT_EMPTY
-  | NEGATE_SINGLELINE
-  | DONT_CAPTURE_GROUP
-  | CAPTURE_GROUP
-  | WORD_IS_ASCII
-  | DIGIT_IS_ASCII
-  | SPACE_IS_ASCII
-  | POSIX_IS_ASCII
-  | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
-  | TEXT_SEGMENT_WORD
+module Option = struct
+  type coption =
+    | SINGLELINE
+    | MULTILINE
+    | IGNORECASE
+    | EXTEND
+    | FIND_LONGEST
+    | FIND_NOT_EMPTY
+    | NEGATE_SINGLELINE
+    | DONT_CAPTURE_GROUP
+    | CAPTURE_GROUP
+    | WORD_IS_ASCII
+    | DIGIT_IS_ASCII
+    | SPACE_IS_ASCII
+    | POSIX_IS_ASCII
+    | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
+    | TEXT_SEGMENT_WORD
 
-type icoption
+  type icoption
 
-external coptions : coption array -> icoption = "ocaml_onig_coptions"
+  external coptions : coption array -> icoption = "ocaml_onig_coptions"
 
-type roption =
-  | NOT_BEGIN_STRING
-  | NOT_END_STRING
+  type roption =
+    | NOT_BEGIN_STRING
+    | NOT_END_STRING
 
-type iroption
+  type iroption
 
-external roptions : roption array -> iroption = "ocaml_onig_roptions"
+  external roptions : roption array -> iroption = "ocaml_onig_roptions"
+end
 
 module Syntax = struct
   type t
@@ -75,12 +77,14 @@ module Region = struct
 end
 
 external create
-  : string -> icoption -> 'enc Encoding.t -> Syntax.t
+  : string -> Option.icoption -> 'enc Encoding.t -> Syntax.t
   -> ('enc t, string) result
   = "ocaml_onig_new"
 
-external search : 'enc t -> string -> int -> int -> iroption -> Region.t option
+external search
+  : 'enc t -> string -> int -> int -> Option.iroption -> Region.t option
   = "ocaml_onig_search"
 
-external match_ : 'enc t -> string -> int -> iroption -> Region.t option
+external match_
+  : 'enc t -> string -> int -> Option.iroption -> Region.t option
   = "ocaml_onig_match"

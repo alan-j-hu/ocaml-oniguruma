@@ -1,5 +1,5 @@
-let coptions = Oniguruma.coptions [||]
-let roptions = Oniguruma.roptions [||]
+let coptions = Oniguruma.Option.coptions [||]
+let roptions = Oniguruma.Option.roptions [||]
 
 let check_against regs exp_regs =
   let num_regs = Oniguruma.Region.length regs in
@@ -13,7 +13,9 @@ let check_against regs exp_regs =
       loop (i + 1) (n - 1) exp_regs
   in loop 0 num_regs exp_regs
 
-let test_search enc pat str exp_regs =
+let test_search coptions roptions enc pat str exp_regs =
+  let coptions = Oniguruma.Option.coptions coptions in
+  let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     print_endline pat;
@@ -29,7 +31,9 @@ let test_search enc pat str exp_regs =
     | Some region ->
       check_against region exp_regs
 
-let neg_test_search enc pat str =
+let neg_test_search coptions roptions enc pat str =
+  let coptions = Oniguruma.Option.coptions coptions in
+  let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     print_endline pat;
@@ -41,7 +45,9 @@ let neg_test_search enc pat str =
     | None -> ()
     | Some _ -> assert false
 
-let test_match enc pat n str exp_regs =
+let test_match coptions roptions enc pat n str exp_regs =
+  let coptions = Oniguruma.Option.coptions coptions in
+  let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     print_endline pat;
@@ -57,7 +63,9 @@ let test_match enc pat n str exp_regs =
     | Some region ->
       check_against region exp_regs
 
-let neg_test_match enc pat n str =
+let neg_test_match coptions roptions enc pat n str =
+  let coptions = Oniguruma.Option.coptions coptions in
+  let roptions = Oniguruma.Option.roptions roptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     print_endline pat;

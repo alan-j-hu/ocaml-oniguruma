@@ -22,42 +22,44 @@ module Encoding : sig
 end
 (** Character encodings. *)
 
-type coption =
-  | SINGLELINE
-  | MULTILINE
-  | IGNORECASE
-  | EXTEND
-  | FIND_LONGEST
-  | FIND_NOT_EMPTY
-  | NEGATE_SINGLELINE
-  | DONT_CAPTURE_GROUP
-  | CAPTURE_GROUP
-  | WORD_IS_ASCII
-  | DIGIT_IS_ASCII
-  | SPACE_IS_ASCII
-  | POSIX_IS_ASCII
-  | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
-  | TEXT_SEGMENT_WORD
+module Option : sig
+  type coption =
+    | SINGLELINE
+    | MULTILINE
+    | IGNORECASE
+    | EXTEND
+    | FIND_LONGEST
+    | FIND_NOT_EMPTY
+    | NEGATE_SINGLELINE
+    | DONT_CAPTURE_GROUP
+    | CAPTURE_GROUP
+    | WORD_IS_ASCII
+    | DIGIT_IS_ASCII
+    | SPACE_IS_ASCII
+    | POSIX_IS_ASCII
+    | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
+    | TEXT_SEGMENT_WORD
 
-(** Compile-time options. *)
+  (** Compile-time options. *)
 
-type icoption
-(** Internal representation of compile-time options. *)
+  type icoption
+  (** Internal representation of compile-time options. *)
 
-external coptions : coption array -> icoption = "ocaml_onig_coptions"
-(** Convert the compile-time options to their internal representation. *)
+  external coptions : coption array -> icoption = "ocaml_onig_coptions"
+  (** Convert the compile-time options to their internal representation. *)
 
-type roption =
-  | NOT_BEGIN_STRING
-  | NOT_END_STRING
+  type roption =
+    | NOT_BEGIN_STRING
+    | NOT_END_STRING
 
-(** Runtime options. *)
+  (** Runtime options. *)
 
-type iroption
-(** Internal representation of runtime options. *)
+  type iroption
+  (** Internal representation of runtime options. *)
 
-external roptions : roption array -> iroption = "ocaml_onig_roptions"
-(** Convert the runtime options to their internal representation. *)
+  external roptions : roption array -> iroption = "ocaml_onig_roptions"
+  (** Convert the runtime options to their internal representation. *)
+end
 
 module Syntax : sig
   type t
@@ -84,12 +86,13 @@ module Region : sig
 end
 
 external create
-  : string -> icoption -> 'enc Encoding.t -> Syntax.t
+  : string -> Option.icoption -> 'enc Encoding.t -> Syntax.t
   -> ('enc t, string) result
   = "ocaml_onig_new"
 (** [create pattern options encoding syntax] creates a regex. *)
 
-external search : 'enc t -> string -> int -> int -> iroption -> Region.t option
+external search
+  : 'enc t -> string -> int -> int -> Option.iroption -> Region.t option
   = "ocaml_onig_search"
 (** [search regex string start range option] searches
     [String.sub string start range] for [regex].
@@ -100,7 +103,8 @@ external search : 'enc t -> string -> int -> int -> iroption -> Region.t option
     @param range The string position to stop searching at, as a byte offset
     @param option Search options *)
 
-external match_ : 'enc t -> string -> int -> iroption -> Region.t option
+external match_
+  : 'enc t -> string -> int -> Option.iroption -> Region.t option
   = "ocaml_onig_match"
 (** [match_ regex string pos options] matches [regex] against [string] at
     position [pos].

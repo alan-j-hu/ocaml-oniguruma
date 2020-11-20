@@ -4,6 +4,6 @@
  (libraries oniguruma))
 
 (tests
- (names test_ascii test_utf8)
- (modules test_ascii test_utf8)
+ (names test_ascii test_utf8 test_options)
+ (modules test_ascii test_utf8 test_options)
  (libraries oniguruma test_util))
