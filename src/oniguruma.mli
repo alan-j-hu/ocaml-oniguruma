@@ -6,6 +6,7 @@ type _ t
     so that regular expressions for different encodings may not be mixed. *)
 
 exception Error of string
+[@warn_on_literal_pattern]
 
 module Encoding : sig
   type ascii

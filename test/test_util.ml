@@ -1,6 +1,3 @@
-let coptions = Oniguruma.Option.coptions [||]
-let roptions = Oniguruma.Option.roptions [||]
-
 let check_out_of_bounds regs idx =
   try ignore (Oniguruma.Region.cap_beg regs idx); assert false with
   | Oniguruma.Error _ -> ()
