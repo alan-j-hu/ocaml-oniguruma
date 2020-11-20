@@ -142,7 +142,7 @@ CAMLprim value ocaml_onig_coptions(value array_val)
         const OnigOptionType flag = coption_type(elem);
         options |= flag;
     }
-    CAMLreturn(Val_int(options));
+    CAMLreturn(Val_long(options));
 }
 
 CAMLprim value ocaml_onig_roptions(value array_val)
@@ -155,7 +155,7 @@ CAMLprim value ocaml_onig_roptions(value array_val)
         const OnigOptionType flag = roption_type(elem);
         options |= flag;
     }
-    CAMLreturn(Val_int(options));
+    CAMLreturn(Val_long(options));
 }
 
 
@@ -242,7 +242,7 @@ CAMLprim value ocaml_onig_search(
         string + search_start,
         string + search_end,
         region,
-        Int_val(options_val));
+        Long_val(options_val));
     if(ret >= 0) {
         /* option_val : region option */
         /* Must store all fields immediately after small allocation! */
@@ -281,7 +281,7 @@ CAMLprim value ocaml_onig_match(
         string + string_length,
         string + search_at,
         region,
-        Int_val(options_val));
+        Long_val(options_val));
     if(ret >= 0) {
         /* option_val : region option */
         /* Must store all fields immediately after small allocation! */
@@ -303,26 +303,26 @@ CAMLprim value ocaml_onig_region_length(value region)
     CAMLreturn(Val_int(Region_val(region)->num_regs));
 }
 
-CAMLprim value ocaml_onig_reg_beg(value region_val, value idx_val)
+CAMLprim value ocaml_onig_cap_beg(value region_val, value idx_val)
 {
     CAMLparam2(region_val, idx_val);
     OnigRegion* region = Region_val(region_val);
-    int idx = Int_val(idx_val);
-    if(idx < region->num_regs) {
+    long int idx = Long_val(idx_val);
+    if(idx >= 0 && idx < region->num_regs) {
         CAMLreturn(Val_int(region->beg[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "reg_beg: Index out of bounds");   
+        *ocaml_onig_Error_exn, "cap_beg: Index out of bounds");
 }
 
-CAMLprim value ocaml_onig_reg_end(value region_val, value idx_val)
+CAMLprim value ocaml_onig_cap_end(value region_val, value idx_val)
 {
     CAMLparam2(region_val, idx_val);
     OnigRegion* region = Region_val(region_val);
-    int idx = Int_val(idx_val);
-    if(idx < region->num_regs) {
+    long int idx = Long_val(idx_val);
+    if(idx >= 0 && idx < region->num_regs) {
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "reg_end: Index out of bounds");   
+        *ocaml_onig_Error_exn, "cap_end: Index out of bounds");
 }

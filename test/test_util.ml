@@ -1,15 +1,21 @@
 let coptions = Oniguruma.Option.coptions [||]
 let roptions = Oniguruma.Option.roptions [||]
 
+let check_out_of_bounds regs idx =
+  try ignore (Oniguruma.Region.cap_beg regs idx); assert false with
+  | Oniguruma.Error _ -> ()
+
 let check_against regs exp_regs =
   let num_regs = Oniguruma.Region.length regs in
+  check_out_of_bounds regs (-1);
+  check_out_of_bounds regs num_regs;
   let rec loop i num_regs exp_regs = match num_regs, exp_regs with
     | 0, [] -> ()
     | 0, _ :: _ -> assert false
     | _, [] -> assert false
     | n, (exp_beg, exp_end) :: exp_regs ->
-      assert (Oniguruma.Region.reg_beg regs i = exp_beg);
-      assert (Oniguruma.Region.reg_end regs i = exp_end);
+      assert (Oniguruma.Region.cap_beg regs i = exp_beg);
+      assert (Oniguruma.Region.cap_end regs i = exp_end);
       loop (i + 1) (n - 1) exp_regs
   in loop 0 num_regs exp_regs
 

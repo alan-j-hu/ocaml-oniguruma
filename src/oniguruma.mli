@@ -1,3 +1,6 @@
+(** Bindings to K.Kosako's {{: https://github.com/kkos/oniguruma } Oniguruma }
+    library. *)
+
 type _ t
 (** A regular expression. The phantom type parameter represents the encoding,
     so that regular expressions for different encodings may not be mixed. *)
@@ -71,18 +74,22 @@ end
 
 module Region : sig
   type t
-  (** The regions returned by a search or match. *)
+  (** The capture groups returned by a search or match. *)
 
   external length : t -> int = "ocaml_onig_region_length"
   (** [length region] gets the number of regions. *)
 
-  external reg_beg : t -> int -> int = "ocaml_onig_reg_beg"
-  (** [reg_beg region idx] gets the string position of the region at the given
-      index. The string position is an offset in bytes. *)
+  external cap_beg : t -> int -> int = "ocaml_onig_cap_beg"
+  (** [cap_beg region idx] gets the string position of the capture group at the
+      index. The string position is an offset in bytes. Returns -1 if the
+      capture group wasn't found. Raises {!exception:Error} if the index is
+      out of bounds. *)
 
-  external reg_end : t -> int -> int = "ocaml_onig_reg_end"
-  (** [reg_end region idx] gets the string position of the region at the given
-      index. The string position is an offset in bytes. *)
+  external cap_end : t -> int -> int = "ocaml_onig_cap_end"
+  (** [cap_end region idx] gets the string position of the capture group at the
+      index. The string position is an offset in bytes. Returns -1 if the
+      capture group wasn't found. Raises {!exception:Error} if the index is
+      out of bounds. *)
 end
 
 external create
@@ -95,7 +102,8 @@ external search
   : 'enc t -> string -> int -> int -> Option.iroption -> Region.t option
   = "ocaml_onig_search"
 (** [search regex string start range option] searches
-    [String.sub string start range] for [regex].
+    [String.sub string start range] for [regex]. Raises {!exception:Error} if
+    there is an error (other than a mismatch).
 
     @param regex The pattern to search for
     @param string The string to search
@@ -107,7 +115,8 @@ external match_
   : 'enc t -> string -> int -> Option.iroption -> Region.t option
   = "ocaml_onig_match"
 (** [match_ regex string pos options] matches [regex] against [string] at
-    position [pos].
+    position [pos]. Raises {!exception:Error} if there is an error (other than
+    a mismatch).
 
     @param regex The pattern to match
     @param string The string to match against
