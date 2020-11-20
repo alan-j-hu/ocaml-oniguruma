@@ -36,6 +36,6 @@ let () =
   test_match "大.+" 0 "大好き" [0, 9];
   test_match "大.+" 0 "大学" [0, 6];
   test_match "大.+" 0 "大人" [0, 6];
-  neg_test_match "a" 1 "あa";
+  neg_test_match "あa" 3 "あa";
   test_search_out_of_bounds "a" "a" 1 2;
   test_search_out_of_bounds "a" "a" (-1) 1
