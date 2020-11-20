@@ -93,7 +93,7 @@ static void finalize_regex_t(value v)
 }
 
 static struct custom_operations regex_ops = {
-    .identifier = "ocaml.oniguruma.regex_t",
+    .identifier = "ocaml.oniguruma.t",
     .finalize = finalize_regex_t,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -205,7 +205,7 @@ static void finalize_region(value v)
 }
 
 static struct custom_operations region_ops = {
-    .identifier = "ocaml.oniguruma.region",
+    .identifier = "ocaml.oniguruma.region.t",
     .finalize = finalize_region,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -305,7 +305,7 @@ CAMLprim value ocaml_onig_region_length(value region)
     CAMLreturn(Val_int(Region_val(region)->num_regs));
 }
 
-CAMLprim value ocaml_onig_cap_beg(value region_val, value idx_val)
+CAMLprim value ocaml_onig_capture_beg(value region_val, value idx_val)
 {
     CAMLparam2(region_val, idx_val);
     OnigRegion* region = Region_val(region_val);
@@ -314,10 +314,10 @@ CAMLprim value ocaml_onig_cap_beg(value region_val, value idx_val)
         CAMLreturn(Val_int(region->beg[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "cap_beg: Index out of bounds");
+        *ocaml_onig_Error_exn, "capture_beg: Index out of bounds");
 }
 
-CAMLprim value ocaml_onig_cap_end(value region_val, value idx_val)
+CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
 {
     CAMLparam2(region_val, idx_val);
     OnigRegion* region = Region_val(region_val);
@@ -326,5 +326,5 @@ CAMLprim value ocaml_onig_cap_end(value region_val, value idx_val)
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "cap_end: Index out of bounds");
+        *ocaml_onig_Error_exn, "capture_end: Index out of bounds");
 }

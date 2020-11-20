@@ -80,15 +80,15 @@ module Region : sig
   external length : t -> int = "ocaml_onig_region_length"
   (** [length region] gets the number of regions. *)
 
-  external cap_beg : t -> int -> int = "ocaml_onig_cap_beg"
-  (** [cap_beg region idx] gets the string position of the capture group at the
-      index. The string position is an offset in bytes. Returns -1 if the
+  external capture_beg : t -> int -> int = "ocaml_onig_capture_beg"
+  (** [capture_beg region idx] gets the string position of the capture group at
+      the index. The string position is an offset in bytes. Returns -1 if the
       capture group wasn't found. Raises {!exception:Error} if the index is
       out of bounds. *)
 
-  external cap_end : t -> int -> int = "ocaml_onig_cap_end"
-  (** [cap_end region idx] gets the string position of the capture group at the
-      index. The string position is an offset in bytes. Returns -1 if the
+  external capture_end : t -> int -> int = "ocaml_onig_capture_end"
+  (** [capture_end region idx] gets the string position of the capture group at
+      the index. The string position is an offset in bytes. Returns -1 if the
       capture group wasn't found. Raises {!exception:Error} if the index is
       out of bounds. *)
 end

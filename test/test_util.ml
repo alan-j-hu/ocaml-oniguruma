@@ -1,6 +1,8 @@
 let check_out_of_bounds regs idx =
-  try ignore (Oniguruma.Region.cap_beg regs idx); assert false with
-  | Oniguruma.Error _ -> ()
+  (try ignore (Oniguruma.Region.capture_beg regs idx); assert false with
+   | Oniguruma.Error _ -> ());
+  (try ignore (Oniguruma.Region.capture_end regs idx); assert false with
+   | Oniguruma.Error _ -> ())
 
 let check_against regs exp_regs =
   let num_regs = Oniguruma.Region.length regs in
@@ -11,8 +13,8 @@ let check_against regs exp_regs =
     | 0, _ :: _ -> assert false
     | _, [] -> assert false
     | n, (exp_beg, exp_end) :: exp_regs ->
-      assert (Oniguruma.Region.cap_beg regs i = exp_beg);
-      assert (Oniguruma.Region.cap_end regs i = exp_end);
+      assert (Oniguruma.Region.capture_beg regs i = exp_beg);
+      assert (Oniguruma.Region.capture_end regs i = exp_end);
       loop (i + 1) (n - 1) exp_regs
   in loop 0 num_regs exp_regs
 

@@ -71,9 +71,9 @@ module Region = struct
 
   external length : t -> int = "ocaml_onig_region_length"
 
-  external cap_beg : t -> int -> int = "ocaml_onig_cap_beg"
+  external capture_beg : t -> int -> int = "ocaml_onig_capture_beg"
 
-  external cap_end : t -> int -> int = "ocaml_onig_cap_end"
+  external capture_end : t -> int -> int = "ocaml_onig_capture_end"
 end
 
 external create
