@@ -235,6 +235,7 @@ CAMLprim value ocaml_onig_search(
     OnigRegion* region = onig_region_new();
     region_val = caml_alloc_custom(&region_ops, sizeof(OnigRegion*), 0, 1);
     Region_val(region_val) = region;
+    /* Oniguruma library should handle out-of-bounds ranges */
     int ret = onig_search(
         reg,
         string,
@@ -275,6 +276,7 @@ CAMLprim value ocaml_onig_match(
     OnigRegion* region = onig_region_new();
     region_val = caml_alloc_custom(&region_ops, sizeof(OnigRegion*), 0, 1);
     Region_val(region_val) = region;
+    /* Oniguruma library should handle out-of-bounds ranges */
     int ret = onig_match(
         reg,
         string,

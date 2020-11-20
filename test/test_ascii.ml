@@ -2,10 +2,14 @@ let test_search =
   Test_util.test_search [||] [||] Oniguruma.Encoding.ascii
 let neg_test_search =
   Test_util.neg_test_search [||] [||] Oniguruma.Encoding.ascii
+let test_search_out_of_bounds =
+  Test_util.test_search_out_of_bounds [||] [||] Oniguruma.Encoding.ascii
 let test_match =
   Test_util.test_match [||] [||] Oniguruma.Encoding.ascii
 let neg_test_match =
   Test_util.neg_test_match [||] [||] Oniguruma.Encoding.ascii
+let test_match_out_of_bounds =
+  Test_util.test_match_out_of_bounds [||] [||] Oniguruma.Encoding.ascii
 
 let () =
   test_search "a|b" "a" [0, 1];
@@ -27,4 +31,10 @@ let () =
   test_match "a" 0 "a" [0, 1];
   test_match "a" 1 "ba" [1, 2];
   test_match "b" 1 "abc" [1, 2];
-  neg_test_match "a" 1 "a"
+  neg_test_match "a" 1 "a";
+  test_search_out_of_bounds "a" "" 0 1;
+  test_search_out_of_bounds "abc" "abc" (-5) 16;
+  test_search_out_of_bounds "abc" "abc" (-1) 3;
+  test_search_out_of_bounds "abc" "a" 0 2;
+  test_match_out_of_bounds "a" "a" 2;
+  test_match_out_of_bounds "a" "a" (-1)
