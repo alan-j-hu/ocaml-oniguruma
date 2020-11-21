@@ -27,40 +27,35 @@ module Encoding = struct
 end
 
 module Options = struct
-  type compile_time = int
+  type _ t = int
 
-  external compile_time : int -> compile_time =
-    "ocaml_onig_option"
-
-  let compile_none = compile_time 0
-  let singleline = compile_time 1
-  let multiline = compile_time 2
-  let ignorecase = compile_time 3
-  let extend = compile_time 4
-  let find_longest = compile_time 5
-  let find_not_empty = compile_time 6
-  let negate_singleline = compile_time 7
-  let dont_capture_group = compile_time 8
-  let capture_group = compile_time 9
-  let word_is_ascii = compile_time 10
-  let digit_is_ascii = compile_time 11
-  let space_is_ascii = compile_time 12
-  let posix_is_ascii = compile_time 13
-  let text_segment_extended_grapheme_cluster = compile_time 14
-  let text_segment_word = compile_time 15
+  external option : int -> 'a t = "ocaml_onig_option"
 
   let (<+>) = (lor)
+  let none = option 0
 
-  type search_time = int
+  type compile_time
 
-  external search_time : int -> search_time =
-    "ocaml_onig_option"
+  let singleline = option 1
+  let multiline = option 2
+  let ignorecase = option 3
+  let extend = option 4
+  let find_longest = option 5
+  let find_not_empty = option 6
+  let negate_singleline = option 7
+  let dont_capture_group = option 8
+  let capture_group = option 9
+  let word_is_ascii = option 10
+  let digit_is_ascii = option 11
+  let space_is_ascii = option 12
+  let posix_is_ascii = option 13
+  let text_segment_extended_grapheme_cluster = option 14
+  let text_segment_word = option 15
 
-  let search_none = search_time 0
-  let notbol = search_time 16
-  let noteol = search_time 17
+  type search_time
 
-  let (<|>) = (lor)
+  let notbol = option 16
+  let noteol = option 17
 end
 
 module Syntax = struct
@@ -83,14 +78,15 @@ module Region = struct
 end
 
 external create
-  : string -> Options.compile_time -> 'enc Encoding.t -> Syntax.t
+  : string -> Options.compile_time Options.t -> 'enc Encoding.t -> Syntax.t
   -> ('enc t, string) result
   = "ocaml_onig_new"
 
 external search
-  : 'enc t -> string -> int -> int -> Options.search_time -> Region.t option
+  : 'enc t -> string -> int -> int -> Options.search_time Options.t
+  -> Region.t option
   = "ocaml_onig_search"
 
 external match_
-  : 'enc t -> string -> int -> Options.search_time -> Region.t option
+  : 'enc t -> string -> int -> Options.search_time Options.t -> Region.t option
   = "ocaml_onig_match"

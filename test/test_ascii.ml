@@ -1,33 +1,21 @@
 let test_search =
   Test_util.test_search
-    Oniguruma.Options.compile_none
-    Oniguruma.Options.search_none
-    Oniguruma.Encoding.ascii
+    Oniguruma.Options.none Oniguruma.Options.none Oniguruma.Encoding.ascii
 let neg_test_search =
   Test_util.neg_test_search
-    Oniguruma.Options.compile_none
-    Oniguruma.Options.search_none
-    Oniguruma.Encoding.ascii
+    Oniguruma.Options.none Oniguruma.Options.none Oniguruma.Encoding.ascii
 let test_search_out_of_bounds =
   Test_util.test_search_out_of_bounds
-    Oniguruma.Options.compile_none
-    Oniguruma.Options.search_none
-    Oniguruma.Encoding.ascii
+    Oniguruma.Options.none Oniguruma.Options.none Oniguruma.Encoding.ascii
 let test_match =
   Test_util.test_match
-    Oniguruma.Options.compile_none
-    Oniguruma.Options.search_none
-    Oniguruma.Encoding.ascii
+    Oniguruma.Options.none Oniguruma.Options.none Oniguruma.Encoding.ascii
 let neg_test_match =
   Test_util.neg_test_match
-    Oniguruma.Options.compile_none
-    Oniguruma.Options.search_none
-    Oniguruma.Encoding.ascii
+    Oniguruma.Options.none Oniguruma.Options.none Oniguruma.Encoding.ascii
 let test_match_out_of_bounds =
   Test_util.test_match_out_of_bounds
-    Oniguruma.Options.compile_none
-    Oniguruma.Options.search_none
-    Oniguruma.Encoding.ascii
+    Oniguruma.Options.none Oniguruma.Options.none Oniguruma.Encoding.ascii
 
 let () =
   test_search "a|b" "a" [0, 1];

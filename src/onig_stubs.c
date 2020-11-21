@@ -126,9 +126,7 @@ OnigOptionType option(int v)
     case 16: return ONIG_OPTION_NOTBOL;
     case 17: return ONIG_OPTION_NOTEOL;
     }
-    caml_raise_with_string(
-        *ocaml_onig_Error_exn,
-        "OCaml Oniuruma options: Unreachable");
+    caml_raise_with_string(*ocaml_onig_Error_exn, "option: Unreachable");
 }
 
 CAMLprim value ocaml_onig_option(value int_val)
