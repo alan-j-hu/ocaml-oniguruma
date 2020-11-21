@@ -12,17 +12,14 @@ let () =
   at_exit cleanup
 
 module Encoding = struct
-  type ascii
-  type utf8
   type _ t
 
-  external create_ascii : unit -> ascii t =
-    "ocaml_create_onig_encoding_ascii"
-
-  external create_utf8 : unit -> utf8 t =
-    "ocaml_create_onig_encoding_utf8"
-
+  type ascii
+  external create_ascii : unit -> ascii t = "ocaml_create_onig_encoding_ascii"
   let ascii = create_ascii ()
+
+  type utf8
+  external create_utf8 : unit -> utf8 t = "ocaml_create_onig_encoding_utf8"
   let utf8 = create_utf8 ()
 end
 

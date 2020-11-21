@@ -1,7 +1,7 @@
 (** Bindings to K.Kosako's {{: https://github.com/kkos/oniguruma } Oniguruma }
     library. Also see the
     {{: https://github.com/kkos/oniguruma/blob/master/doc/API } Oniguruma
-    docs }. *)
+    API documentation }. *)
 
 type _ t
 (** A regular expression. The phantom type parameter indicates the encoding,
@@ -11,18 +11,15 @@ exception Error of string
 [@warn_on_literal_pattern]
 
 module Encoding : sig
-  type ascii
-  (** A phantom type representing ASCII. *)
-
-  type utf8
-  (** A phantom type representing UTF-8. *)
-
   type _ t
-  (** A character encoding, indexed by a phantom type parameter. *)
+  (** A character encoding. The phantom type parameter indicates the
+      encoding. *)
 
+  type ascii
   val ascii : ascii t
   (** The ASCII encoding. *)
 
+  type utf8
   val utf8 : utf8 t
   (** The UTF-8 encoding. *)
 end
@@ -35,14 +32,14 @@ module Options : sig
   (** An option. The phantom type parameter indicates whether it is
       compile-time or search-time. *)
 
-  type compile_time
-  (** Compile-time options. *)
-
   val (<+>) : 'a t -> 'a t -> 'a t
   (** Combines options. *)
 
   val none : _ t
   (** No options. The neutral element of {!val:(<+>)}. *)
+
+  type compile_time
+  (** Represents compile-time options. *)
 
   val singleline : compile_time t
   val multiline : compile_time t
@@ -61,7 +58,7 @@ module Options : sig
   val text_segment_word : compile_time t
 
   type search_time
-  (** Search-time options. *)
+  (** Represents search-time options. *)
 
   val notbol : search_time t
   val noteol : search_time t
@@ -80,7 +77,7 @@ module Region : sig
   (** The capture groups returned by a search or match. *)
 
   external length : t -> int = "ocaml_onig_region_length"
-  (** [length region] gets the number of regions. *)
+  (** [length region] gets the number of captures. *)
 
   external capture_beg : t -> int -> int = "ocaml_onig_capture_beg"
   (** [capture_beg region idx] gets the string position of the capture group at
