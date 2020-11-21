@@ -27,36 +27,36 @@ end
 (** Character encodings. *)
 
 module Options : sig
-  type compile_options
+  type compile_time
   (** Compile-time options. *)
 
-  val (<+>) : compile_options -> compile_options -> compile_options
+  val (<+>) : compile_time -> compile_time -> compile_time
 
-  val compile_none : compile_options
-  val singleline : compile_options
-  val multiline : compile_options
-  val ignorecase : compile_options
-  val extend : compile_options
-  val find_longest : compile_options
-  val find_not_empty : compile_options
-  val negate_singleline : compile_options
-  val dont_capture_group : compile_options
-  val capture_group : compile_options
-  val word_is_ascii : compile_options
-  val digit_is_ascii : compile_options
-  val space_is_ascii : compile_options
-  val posix_is_ascii : compile_options
-  val text_segment_extended_grapheme_cluster : compile_options
-  val text_segment_word : compile_options
+  val compile_none : compile_time
+  val singleline : compile_time
+  val multiline : compile_time
+  val ignorecase : compile_time
+  val extend : compile_time
+  val find_longest : compile_time
+  val find_not_empty : compile_time
+  val negate_singleline : compile_time
+  val dont_capture_group : compile_time
+  val capture_group : compile_time
+  val word_is_ascii : compile_time
+  val digit_is_ascii : compile_time
+  val space_is_ascii : compile_time
+  val posix_is_ascii : compile_time
+  val text_segment_extended_grapheme_cluster : compile_time
+  val text_segment_word : compile_time
 
-  type search_options
+  type search_time
   (** Search-time options. *)
 
-  val (<|>) : search_options -> search_options -> search_options
+  val (<|>) : search_time -> search_time -> search_time
 
-  val search_none : search_options
-  val not_begin_string : search_options
-  val not_end_string : search_options
+  val search_none : search_time
+  val not_begin_string : search_time
+  val not_end_string : search_time
 end
 
 module Syntax : sig
@@ -88,13 +88,13 @@ module Region : sig
 end
 
 external create
-  : string -> Options.compile_options -> 'enc Encoding.t -> Syntax.t
+  : string -> Options.compile_time -> 'enc Encoding.t -> Syntax.t
   -> ('enc t, string) result
   = "ocaml_onig_new"
 (** [create pattern options encoding syntax] creates a regex. *)
 
 external search
-  : 'enc t -> string -> int -> int -> Options.search_options -> Region.t option
+  : 'enc t -> string -> int -> int -> Options.search_time -> Region.t option
   = "ocaml_onig_search"
 (** [search regex string start range option] searches
     [String.sub string start range] for [regex]. Raises {!exception:Error} if
@@ -107,7 +107,7 @@ external search
     @param option Search options *)
 
 external match_
-  : 'enc t -> string -> int -> Options.search_options -> Region.t option
+  : 'enc t -> string -> int -> Options.search_time -> Region.t option
   = "ocaml_onig_match"
 (** [match_ regex string pos options] matches [regex] against [string] at
     position [pos]. Raises {!exception:Error} if there is an error (other than

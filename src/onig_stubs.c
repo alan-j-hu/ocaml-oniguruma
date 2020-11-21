@@ -49,7 +49,8 @@ CAMLprim value ocaml_onig_initialize(value unit)
         ONIG_ENCODING_GB18030
     };
     onig_initialize(
-        use_encodings, sizeof(use_encodings) / sizeof(use_encodings[0]));
+        use_encodings,
+        sizeof(use_encodings) / sizeof(use_encodings[0]));
     CAMLreturn(Val_unit);
 }
 
@@ -103,9 +104,9 @@ static struct custom_operations regex_ops = {
     .fixed_length = custom_fixed_length_default
 };
 
-OnigOptionType option(value v)
+OnigOptionType option(int v)
 {
-    switch(Int_val(v)) {
+    switch(v) {
     case 0: return ONIG_OPTION_NONE;
     case 1: return ONIG_OPTION_SINGLELINE;
     case 2: return ONIG_OPTION_MULTILINE;
@@ -126,13 +127,14 @@ OnigOptionType option(value v)
     case 17: return ONIG_OPTION_NOTEOL;
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "option: Unreachable");
+        *ocaml_onig_Error_exn,
+        "OCaml Oniuruma options: Unreachable");
 }
 
 CAMLprim value ocaml_onig_option(value int_val)
 {
     CAMLparam1(int_val);
-    CAMLreturn(Val_int(option(int_val)));
+    CAMLreturn(Val_int(option(Int_val(int_val))));
 }
 
 CAMLprim value ocaml_onig_new(
@@ -290,7 +292,8 @@ CAMLprim value ocaml_onig_capture_beg(value region_val, value idx_val)
         CAMLreturn(Val_int(region->beg[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "capture_beg: Index out of bounds");
+        *ocaml_onig_Error_exn,
+        "capture_beg: Index out of bounds");
 }
 
 CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
@@ -302,5 +305,6 @@ CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn, "capture_end: Index out of bounds");
+        *ocaml_onig_Error_exn,
+        "capture_end: Index out of bounds");
 }
