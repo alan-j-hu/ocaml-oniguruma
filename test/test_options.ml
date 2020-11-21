@@ -20,12 +20,14 @@ let () =
   neg_test_search_ascii compile_none search_none "a" "A";
   test_search_ascii ignorecase search_none "A" "a" [0, 1];
 
-  neg_test_search_ascii (compile_none <+> compile_none)
-    search_none "ML" "OCaml";
+  neg_test_search_ascii
+    (compile_none <+> compile_none) search_none "ML" "OCaml";
   test_search_ascii ignorecase search_none "ML" "OCaml" [3, 5];
   test_search_ascii ignorecase search_none "ml" "OCaml" [3, 5];
-  test_search_ascii (compile_none <+> ignorecase) search_none "ML" "SML" [1, 3];
-  test_search_ascii (ignorecase <+> compile_none) search_none "ml" "SML" [1, 3];
+  test_search_ascii
+    (compile_none <+> ignorecase) search_none "ML" "SML" [1, 3];
+  test_search_ascii
+    (ignorecase <+> compile_none) search_none "ml" "SML" [1, 3];
 
   neg_test_search_ascii compile_none search_none "A" "a";
   test_search_utf8 ignorecase search_none "a" "A" [0, 1];
@@ -40,8 +42,7 @@ let () =
   test_match_ascii compile_none noteol "^" 0 "" [0, 0];
   neg_test_match_ascii compile_none (notbol <|> noteol) "^" 0 "";
   neg_test_match_ascii compile_none
-    (search_none <|> noteol <|> notbol)
-    "^" 0 "";
+    (search_none <|> noteol <|> notbol) "^" 0 "";
 
   test_match_ascii compile_none search_none "$" 0 "" [0, 0];
   test_match_ascii compile_none notbol "$" 0 "" [0, 0];

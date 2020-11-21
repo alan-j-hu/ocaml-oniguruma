@@ -1,5 +1,7 @@
 (** Bindings to K.Kosako's {{: https://github.com/kkos/oniguruma } Oniguruma }
-    library. *)
+    library. Also see the
+    {{: https://github.com/kkos/oniguruma/blob/master/doc/API } Oniguruma
+    docs }. *)
 
 type _ t
 (** A regular expression. The phantom type parameter represents the encoding,
@@ -27,12 +29,17 @@ end
 (** Character encodings. *)
 
 module Options : sig
+  (** Manipulation of regex options. *)
+
   type compile_time
   (** Compile-time options. *)
 
   val (<+>) : compile_time -> compile_time -> compile_time
+  (** Combines compile-time options. *)
 
   val compile_none : compile_time
+  (** No compile-time options. The neutral element of {!val:(<+>)} *)
+
   val singleline : compile_time
   val multiline : compile_time
   val ignorecase : compile_time
@@ -53,8 +60,11 @@ module Options : sig
   (** Search-time options. *)
 
   val (<|>) : search_time -> search_time -> search_time
+  (** Combines search-time options. *)
 
   val search_none : search_time
+  (** No search-time options. The neutral element of {!val:(<|>)}. *)
+
   val notbol : search_time
   val noteol : search_time
 end
