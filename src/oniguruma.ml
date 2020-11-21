@@ -57,8 +57,8 @@ module Options = struct
     "ocaml_onig_option"
 
   let search_none = search_time 0
-  let not_begin_string = search_time 16
-  let not_end_string = search_time 17
+  let notbol = search_time 16
+  let noteol = search_time 17
 
   let (<|>) = (lor)
 end

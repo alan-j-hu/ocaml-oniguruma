@@ -55,8 +55,8 @@ module Options : sig
   val (<|>) : search_time -> search_time -> search_time
 
   val search_none : search_time
-  val not_begin_string : search_time
-  val not_end_string : search_time
+  val notbol : search_time
+  val noteol : search_time
 end
 
 module Syntax : sig
