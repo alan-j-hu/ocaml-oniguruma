@@ -8,7 +8,7 @@ let neg_test_search_utf8 coptions roptions =
   Test_util.neg_test_search coptions roptions Oniguruma.Encoding.utf8
 
 let () =
-  let open Oniguruma.Option in
+  let open Oniguruma.Options in
   test_search_ascii [|MULTILINE|] [||] "." "\n" [0, 1];
   neg_test_search_ascii [||] [||] "." "\n";
   test_search_ascii [|IGNORECASE|] [||] "a" "A" [0, 1];

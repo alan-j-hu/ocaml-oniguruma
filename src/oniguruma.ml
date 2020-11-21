@@ -26,8 +26,8 @@ module Encoding = struct
   let utf8 = create_utf8 ()
 end
 
-module Option = struct
-  type coption =
+module Options = struct
+  type compile_option =
     | SINGLELINE
     | MULTILINE
     | IGNORECASE
@@ -44,17 +44,19 @@ module Option = struct
     | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
     | TEXT_SEGMENT_WORD
 
-  type icoption
+  type compile_options
 
-  external coptions : coption array -> icoption = "ocaml_onig_coptions"
+  external compile_options : compile_option array -> compile_options =
+    "ocaml_onig_compile_options"
 
-  type roption =
+  type search_option =
     | NOT_BEGIN_STRING
     | NOT_END_STRING
 
-  type iroption
+  type search_options
 
-  external roptions : roption array -> iroption = "ocaml_onig_roptions"
+  external search_options : search_option array -> search_options =
+    "ocaml_onig_search_options"
 end
 
 module Syntax = struct
@@ -77,14 +79,14 @@ module Region = struct
 end
 
 external create
-  : string -> Option.icoption -> 'enc Encoding.t -> Syntax.t
+  : string -> Options.compile_options -> 'enc Encoding.t -> Syntax.t
   -> ('enc t, string) result
   = "ocaml_onig_new"
 
 external search
-  : 'enc t -> string -> int -> int -> Option.iroption -> Region.t option
+  : 'enc t -> string -> int -> int -> Options.search_options -> Region.t option
   = "ocaml_onig_search"
 
 external match_
-  : 'enc t -> string -> int -> Option.iroption -> Region.t option
+  : 'enc t -> string -> int -> Options.search_options -> Region.t option
   = "ocaml_onig_match"

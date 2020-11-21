@@ -132,7 +132,7 @@ OnigOptionType roption_type(value v)
     }
 }
 
-CAMLprim value ocaml_onig_coptions(value array_val)
+CAMLprim value ocaml_onig_compile_options(value array_val)
 {
     CAMLparam1(array_val);
     OnigOptionType options = ONIG_OPTION_NONE;
@@ -145,7 +145,7 @@ CAMLprim value ocaml_onig_coptions(value array_val)
     CAMLreturn(Val_long(options));
 }
 
-CAMLprim value ocaml_onig_roptions(value array_val)
+CAMLprim value ocaml_onig_search_options(value array_val)
 {
     CAMLparam1(array_val);
     OnigOptionType options = ONIG_OPTION_NONE;

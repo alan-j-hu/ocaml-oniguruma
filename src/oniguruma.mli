@@ -26,8 +26,8 @@ module Encoding : sig
 end
 (** Character encodings. *)
 
-module Option : sig
-  type coption =
+module Options : sig
+  type compile_option =
     | SINGLELINE
     | MULTILINE
     | IGNORECASE
@@ -46,23 +46,25 @@ module Option : sig
 
   (** Compile-time options. *)
 
-  type icoption
+  type compile_options
   (** Internal representation of compile-time options. *)
 
-  external coptions : coption array -> icoption = "ocaml_onig_coptions"
+  external compile_options : compile_option array -> compile_options =
+    "ocaml_onig_compile_options"
   (** Convert the compile-time options to their internal representation. *)
 
-  type roption =
+  type search_option =
     | NOT_BEGIN_STRING
     | NOT_END_STRING
 
-  (** Runtime options. *)
+  (** Search-time options. *)
 
-  type iroption
-  (** Internal representation of runtime options. *)
+  type search_options
+  (** Internal representation of search-time options. *)
 
-  external roptions : roption array -> iroption = "ocaml_onig_roptions"
-  (** Convert the runtime options to their internal representation. *)
+  external search_options : search_option array -> search_options =
+    "ocaml_onig_search_options"
+  (** Convert the search-time options to their internal representation. *)
 end
 
 module Syntax : sig
@@ -94,13 +96,13 @@ module Region : sig
 end
 
 external create
-  : string -> Option.icoption -> 'enc Encoding.t -> Syntax.t
+  : string -> Options.compile_options -> 'enc Encoding.t -> Syntax.t
   -> ('enc t, string) result
   = "ocaml_onig_new"
 (** [create pattern options encoding syntax] creates a regex. *)
 
 external search
-  : 'enc t -> string -> int -> int -> Option.iroption -> Region.t option
+  : 'enc t -> string -> int -> int -> Options.search_options -> Region.t option
   = "ocaml_onig_search"
 (** [search regex string start range option] searches
     [String.sub string start range] for [regex]. Raises {!exception:Error} if
@@ -113,7 +115,7 @@ external search
     @param option Search options *)
 
 external match_
-  : 'enc t -> string -> int -> Option.iroption -> Region.t option
+  : 'enc t -> string -> int -> Options.search_options -> Region.t option
   = "ocaml_onig_match"
 (** [match_ regex string pos options] matches [regex] against [string] at
     position [pos]. Raises {!exception:Error} if there is an error (other than
