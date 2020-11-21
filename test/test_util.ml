@@ -19,8 +19,6 @@ let check_against regs exp_regs =
   in loop 0 num_regs exp_regs
 
 let test_search coptions soptions enc pat str exp_regs =
-  let coptions = Oniguruma.Options.compile_options coptions in
-  let roptions = Oniguruma.Options.search_options soptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     prerr_endline pat;
@@ -28,7 +26,7 @@ let test_search coptions soptions enc pat str exp_regs =
     prerr_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.search r str 0 (String.length str) roptions with
+    match Oniguruma.search r str 0 (String.length str) soptions with
     | None ->
       prerr_endline pat;
       prerr_endline str;
@@ -37,8 +35,6 @@ let test_search coptions soptions enc pat str exp_regs =
       check_against region exp_regs
 
 let neg_test_search coptions soptions enc pat str =
-  let coptions = Oniguruma.Options.compile_options coptions in
-  let roptions = Oniguruma.Options.search_options soptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     prerr_endline pat;
@@ -46,13 +42,11 @@ let neg_test_search coptions soptions enc pat str =
     prerr_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.search r str 0 (String.length str) roptions with
+    match Oniguruma.search r str 0 (String.length str) soptions with
     | None -> ()
     | Some _ -> assert false
 
 let test_search_out_of_bounds coptions soptions enc pat str s_beg s_end =
-  let coptions = Oniguruma.Options.compile_options coptions in
-  let roptions = Oniguruma.Options.search_options soptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     prerr_endline pat;
@@ -60,13 +54,11 @@ let test_search_out_of_bounds coptions soptions enc pat str s_beg s_end =
     prerr_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.search r str s_beg s_end roptions with
+    match Oniguruma.search r str s_beg s_end soptions with
     | None -> ()
     | Some _ -> assert false
 
 let test_match coptions soptions enc pat n str exp_regs =
-  let coptions = Oniguruma.Options.compile_options coptions in
-  let roptions = Oniguruma.Options.search_options soptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     prerr_endline pat;
@@ -74,7 +66,7 @@ let test_match coptions soptions enc pat n str exp_regs =
     prerr_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.match_ r str n roptions with
+    match Oniguruma.match_ r str n soptions with
     | None ->
       prerr_endline pat;
       prerr_endline str;
@@ -83,8 +75,6 @@ let test_match coptions soptions enc pat n str exp_regs =
       check_against region exp_regs
 
 let neg_test_match coptions soptions enc pat n str =
-  let coptions = Oniguruma.Options.compile_options coptions in
-  let roptions = Oniguruma.Options.search_options soptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     prerr_endline pat;
@@ -92,13 +82,11 @@ let neg_test_match coptions soptions enc pat n str =
     prerr_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.match_ r str n roptions with
+    match Oniguruma.match_ r str n soptions with
     | None -> ()
     | Some _ -> assert false
 
 let test_match_out_of_bounds coptions soptions enc pat str pos =
-  let coptions = Oniguruma.Options.compile_options coptions in
-  let roptions = Oniguruma.Options.search_options soptions in
   match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
   | Error err ->
     prerr_endline pat;
@@ -106,6 +94,6 @@ let test_match_out_of_bounds coptions soptions enc pat str pos =
     prerr_endline err;
     assert false
   | Ok r ->
-    match Oniguruma.match_ r str pos roptions with
+    match Oniguruma.match_ r str pos soptions with
     | None -> ()
     | Some _ -> assert false

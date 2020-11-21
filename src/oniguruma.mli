@@ -27,44 +27,36 @@ end
 (** Character encodings. *)
 
 module Options : sig
-  type compile_option =
-    | SINGLELINE
-    | MULTILINE
-    | IGNORECASE
-    | EXTEND
-    | FIND_LONGEST
-    | FIND_NOT_EMPTY
-    | NEGATE_SINGLELINE
-    | DONT_CAPTURE_GROUP
-    | CAPTURE_GROUP
-    | WORD_IS_ASCII
-    | DIGIT_IS_ASCII
-    | SPACE_IS_ASCII
-    | POSIX_IS_ASCII
-    | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
-    | TEXT_SEGMENT_WORD
-
+  type compile_options
   (** Compile-time options. *)
 
-  type compile_options
-  (** Internal representation of compile-time options. *)
+  val (<+>) : compile_options -> compile_options -> compile_options
 
-  external compile_options : compile_option array -> compile_options =
-    "ocaml_onig_compile_options"
-  (** Convert the compile-time options to their internal representation. *)
-
-  type search_option =
-    | NOT_BEGIN_STRING
-    | NOT_END_STRING
-
-  (** Search-time options. *)
+  val compile_none : compile_options
+  val singleline : compile_options
+  val multiline : compile_options
+  val ignorecase : compile_options
+  val extend : compile_options
+  val find_longest : compile_options
+  val find_not_empty : compile_options
+  val negate_singleline : compile_options
+  val dont_capture_group : compile_options
+  val capture_group : compile_options
+  val word_is_ascii : compile_options
+  val digit_is_ascii : compile_options
+  val space_is_ascii : compile_options
+  val posix_is_ascii : compile_options
+  val text_segment_extended_grapheme_cluster : compile_options
+  val text_segment_word : compile_options
 
   type search_options
-  (** Internal representation of search-time options. *)
+  (** Search-time options. *)
 
-  external search_options : search_option array -> search_options =
-    "ocaml_onig_search_options"
-  (** Convert the search-time options to their internal representation. *)
+  val (<|>) : search_options -> search_options -> search_options
+
+  val search_none : search_options
+  val not_begin_string : search_options
+  val not_end_string : search_options
 end
 
 module Syntax : sig

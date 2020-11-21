@@ -27,36 +27,40 @@ module Encoding = struct
 end
 
 module Options = struct
-  type compile_option =
-    | SINGLELINE
-    | MULTILINE
-    | IGNORECASE
-    | EXTEND
-    | FIND_LONGEST
-    | FIND_NOT_EMPTY
-    | NEGATE_SINGLELINE
-    | DONT_CAPTURE_GROUP
-    | CAPTURE_GROUP
-    | WORD_IS_ASCII
-    | DIGIT_IS_ASCII
-    | SPACE_IS_ASCII
-    | POSIX_IS_ASCII
-    | TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER
-    | TEXT_SEGMENT_WORD
+  type compile_options = int
 
-  type compile_options
+  external compile_option : int -> compile_options =
+    "ocaml_onig_option"
 
-  external compile_options : compile_option array -> compile_options =
-    "ocaml_onig_compile_options"
+  let compile_none = compile_option 0
+  let singleline = compile_option 1
+  let multiline = compile_option 2
+  let ignorecase = compile_option 3
+  let extend = compile_option 4
+  let find_longest = compile_option 5
+  let find_not_empty = compile_option 6
+  let negate_singleline = compile_option 7
+  let dont_capture_group = compile_option 8
+  let capture_group = compile_option 9
+  let word_is_ascii = compile_option 10
+  let digit_is_ascii = compile_option 11
+  let space_is_ascii = compile_option 12
+  let posix_is_ascii = compile_option 13
+  let text_segment_extended_grapheme_cluster = compile_option 14
+  let text_segment_word = compile_option 15
 
-  type search_option =
-    | NOT_BEGIN_STRING
-    | NOT_END_STRING
+  let (<+>) = (lor)
 
-  type search_options
+  type search_options = int
 
-  external search_options : search_option array -> search_options =
-    "ocaml_onig_search_options"
+  external search_option : int -> search_options =
+    "ocaml_onig_option"
+
+  let search_none = search_option 0
+  let not_begin_string = search_option 16
+  let not_end_string = search_option 17
+
+  let (<|>) = (lor)
 end
 
 module Syntax = struct
