@@ -1,15 +1,15 @@
-let test_search_ascii coptions roptions =
-  Test_util.test_search coptions roptions Oniguruma.Encoding.ascii
-let neg_test_search_ascii coptions roptions =
-  Test_util.neg_test_search coptions roptions Oniguruma.Encoding.ascii
-let test_search_utf8 coptions roptions =
-  Test_util.test_search coptions roptions Oniguruma.Encoding.utf8
-let neg_test_search_utf8 coptions roptions =
-  Test_util.neg_test_search coptions roptions Oniguruma.Encoding.utf8
-let test_match_ascii coptions roptions =
-  Test_util.test_match coptions roptions Oniguruma.Encoding.ascii
-let neg_test_match_ascii coptions roptions =
-  Test_util.neg_test_match coptions roptions Oniguruma.Encoding.ascii
+let test_search_ascii coptions soptions =
+  Test_util.test_search coptions soptions Oniguruma.Encoding.ascii
+let neg_test_search_ascii coptions soptions =
+  Test_util.neg_test_search coptions soptions Oniguruma.Encoding.ascii
+let test_search_utf8 coptions soptions =
+  Test_util.test_search coptions soptions Oniguruma.Encoding.utf8
+let neg_test_search_utf8 coptions soptions =
+  Test_util.neg_test_search coptions soptions Oniguruma.Encoding.utf8
+let test_match_ascii coptions soptions =
+  Test_util.test_match coptions soptions Oniguruma.Encoding.ascii
+let neg_test_match_ascii coptions soptions =
+  Test_util.neg_test_match coptions soptions Oniguruma.Encoding.ascii
 
 let () =
   let open Oniguruma.Options in

@@ -33,10 +33,19 @@ module Options : sig
       compile-time or search-time. *)
 
   val (<+>) : 'a t -> 'a t -> 'a t
-  (** Combines options. *)
+  (** Combines options.
+
+      This operation is:
+
+      - Associative: [(x <+> y) <+> z = x <+> (y <+> z)]
+      - Commutative: [x <+> y = y <+> x]
+      - Idempotent: [x <+> x = x] *)
 
   val none : _ t
-  (** No options. The neutral element of {!val:(<+>)}. *)
+  (** No options. The identity element of {!val:(<+>)}:
+
+      - [none <+> x = x]
+      - [x <+> none = x] *)
 
   type compile_time
   (** Represents compile-time options. *)
