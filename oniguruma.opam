@@ -2,9 +2,9 @@
 opam-version: "2.0"
 version: "0.1.0"
 synopsis: "Oniguruma bindings"
-description: "Oniguruma bindings"
-maintainer: ["Alan Hu <hu.ala@northeastern.edu>"]
-authors: ["Alan Hu <hu.ala@northeastern.edu>"]
+description: "Bindings to the Oniguruma library"
+maintainer: ["Alan Hu <alanh@ccs.neu.edu>"]
+authors: ["Alan Hu <alanh@ccs.neu.edu>"]
 license: "BSD-2-Clause"
 homepage: "https://github.com/alan-j-hu/ocaml-oniguruma"
 doc: "https://alan-j-hu.github.io/ocaml-oniguruma/"
