@@ -11,7 +11,7 @@
 (package
  (name oniguruma)
  (synopsis "Bindings to the Oniguruma regex library")
- (description "Bindings to the Oniguruma regex library.")
+ (description "Bindings to the Oniguruma regular expression library.")
  (depends
   (conf-oniguruma (= 1))
   (ocaml (>= 4.08))))
