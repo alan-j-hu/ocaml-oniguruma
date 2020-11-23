@@ -78,19 +78,19 @@ CAMLprim value ocaml_onig_end(value unit)
     CAMLreturn(unit);
 }
 
-WRAP(ocaml_create_onig_encoding_ascii, ONIG_ENCODING_ASCII)
-WRAP(ocaml_create_onig_encoding_utf8, ONIG_ENCODING_UTF8)
+WRAP(ocaml_get_onig_encoding_ascii, ONIG_ENCODING_ASCII)
+WRAP(ocaml_get_onig_encoding_utf8, ONIG_ENCODING_UTF8)
 
-WRAP(ocaml_create_onig_syntax_asis, ONIG_SYNTAX_ASIS)
-WRAP(ocaml_create_onig_syntax_posix_basic, ONIG_SYNTAX_POSIX_BASIC)
-WRAP(ocaml_create_onig_syntax_posix_extended, ONIG_SYNTAX_POSIX_EXTENDED)
-WRAP(ocaml_create_onig_syntax_emacs, ONIG_SYNTAX_EMACS)
-WRAP(ocaml_create_onig_syntax_grep, ONIG_SYNTAX_GREP)
-WRAP(ocaml_create_onig_syntax_gnu_regex, ONIG_SYNTAX_GNU_REGEX)
-WRAP(ocaml_create_onig_syntax_java, ONIG_SYNTAX_JAVA)
-WRAP(ocaml_create_onig_syntax_perl, ONIG_SYNTAX_PERL)
-WRAP(ocaml_create_onig_syntax_perl_ng, ONIG_SYNTAX_PERL_NG)
-WRAP(ocaml_create_onig_syntax_oniguruma, ONIG_SYNTAX_ONIGURUMA)
+WRAP(ocaml_get_onig_syntax_asis, ONIG_SYNTAX_ASIS)
+WRAP(ocaml_get_onig_syntax_posix_basic, ONIG_SYNTAX_POSIX_BASIC)
+WRAP(ocaml_get_onig_syntax_posix_extended, ONIG_SYNTAX_POSIX_EXTENDED)
+WRAP(ocaml_get_onig_syntax_emacs, ONIG_SYNTAX_EMACS)
+WRAP(ocaml_get_onig_syntax_grep, ONIG_SYNTAX_GREP)
+WRAP(ocaml_get_onig_syntax_gnu_regex, ONIG_SYNTAX_GNU_REGEX)
+WRAP(ocaml_get_onig_syntax_java, ONIG_SYNTAX_JAVA)
+WRAP(ocaml_get_onig_syntax_perl, ONIG_SYNTAX_PERL)
+WRAP(ocaml_get_onig_syntax_perl_ng, ONIG_SYNTAX_PERL_NG)
+WRAP(ocaml_get_onig_syntax_default, ONIG_SYNTAX_DEFAULT)
 
 static void finalize_regex_t(value v)
 {
@@ -125,10 +125,8 @@ OnigOptionType option(int v)
     case 11: return ONIG_OPTION_DIGIT_IS_ASCII;
     case 12: return ONIG_OPTION_SPACE_IS_ASCII;
     case 13: return ONIG_OPTION_POSIX_IS_ASCII;
-    case 14: return ONIG_OPTION_TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER;
-    case 15: return ONIG_OPTION_TEXT_SEGMENT_WORD;
-    case 16: return ONIG_OPTION_NOTBOL;
-    case 17: return ONIG_OPTION_NOTEOL;
+    case 14: return ONIG_OPTION_NOTBOL;
+    case 15: return ONIG_OPTION_NOTEOL;
     }
     caml_raise_with_string(*ocaml_Failure_exn, "option: Unreachable");
 }

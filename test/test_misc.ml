@@ -2,7 +2,7 @@ let re str =
   match
     Oniguruma.create
       str Oniguruma.Options.none Oniguruma.Encoding.ascii
-      Oniguruma.Syntax.oniguruma
+      Oniguruma.Syntax.default
   with
   | Error e ->
     prerr_endline e;

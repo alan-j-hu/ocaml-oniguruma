@@ -62,8 +62,6 @@ module Options : sig
   val digit_is_ascii : compile_time t
   val space_is_ascii : compile_time t
   val posix_is_ascii : compile_time t
-  val text_segment_extended_grapheme_cluster : compile_time t
-  val text_segment_word : compile_time t
 
   type search_time
   (** Represents search-time options. *)
@@ -86,7 +84,7 @@ module Syntax : sig
   val java : t
   val perl : t
   val perl_ng : t
-  val oniguruma : t
+  val default : t
 end
 (** The syntax type. *)
 

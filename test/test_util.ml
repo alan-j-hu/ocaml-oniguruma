@@ -19,7 +19,7 @@ let check_against regs exp_regs =
   in loop 0 num_regs exp_regs
 
 let test_search coptions soptions enc pat str exp_regs =
-  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.default with
   | Error err ->
     prerr_endline pat;
     prerr_endline str;
@@ -35,7 +35,7 @@ let test_search coptions soptions enc pat str exp_regs =
       check_against region exp_regs
 
 let neg_test_search coptions soptions enc pat str =
-  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.default with
   | Error err ->
     prerr_endline pat;
     prerr_endline str;
@@ -47,7 +47,7 @@ let neg_test_search coptions soptions enc pat str =
     | Some _ -> assert false
 
 let test_search_out_of_bounds coptions soptions enc pat str s_beg s_end =
-  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.default with
   | Error err ->
     prerr_endline pat;
     prerr_endline str;
@@ -59,7 +59,7 @@ let test_search_out_of_bounds coptions soptions enc pat str s_beg s_end =
     | Some _ -> assert false
 
 let test_match coptions soptions enc pat n str exp_regs =
-  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.default with
   | Error err ->
     prerr_endline pat;
     prerr_endline str;
@@ -75,7 +75,7 @@ let test_match coptions soptions enc pat n str exp_regs =
       check_against region exp_regs
 
 let neg_test_match coptions soptions enc pat n str =
-  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.default with
   | Error err ->
     prerr_endline pat;
     prerr_endline str;
@@ -87,7 +87,7 @@ let neg_test_match coptions soptions enc pat n str =
     | Some _ -> assert false
 
 let test_match_out_of_bounds coptions soptions enc pat str pos =
-  match Oniguruma.create pat coptions enc Oniguruma.Syntax.oniguruma with
+  match Oniguruma.create pat coptions enc Oniguruma.Syntax.default with
   | Error err ->
     prerr_endline pat;
     prerr_endline str;

@@ -20,12 +20,12 @@ module Encoding = struct
   type _ t
 
   type ascii
-  external create_ascii : unit -> ascii t = "ocaml_create_onig_encoding_ascii"
-  let ascii = create_ascii ()
+  external get_ascii : unit -> ascii t = "ocaml_get_onig_encoding_ascii"
+  let ascii = get_ascii ()
 
   type utf8
-  external create_utf8 : unit -> utf8 t = "ocaml_create_onig_encoding_utf8"
-  let utf8 = create_utf8 ()
+  external get_utf8 : unit -> utf8 t = "ocaml_get_onig_encoding_utf8"
+  let utf8 = get_utf8 ()
 end
 
 module Options = struct
@@ -51,57 +51,55 @@ module Options = struct
   let digit_is_ascii = option 11
   let space_is_ascii = option 12
   let posix_is_ascii = option 13
-  let text_segment_extended_grapheme_cluster = option 14
-  let text_segment_word = option 15
 
   type search_time
 
-  let notbol = option 16
-  let noteol = option 17
+  let notbol = option 14
+  let noteol = option 15
 end
 
 module Syntax = struct
   type t
 
-  external create_asis : unit -> t =
-    "ocaml_create_onig_syntax_asis"
-  let asis = create_asis ()
+  external get_asis : unit -> t =
+    "ocaml_get_onig_syntax_asis"
+  let asis = get_asis ()
 
-  external create_posix_basic : unit -> t =
-    "ocaml_create_onig_syntax_posix_basic"
-  let posix_basic = create_posix_basic ()
+  external get_posix_basic : unit -> t =
+    "ocaml_get_onig_syntax_posix_basic"
+  let posix_basic = get_posix_basic ()
 
-  external create_posix_extended : unit -> t =
-    "ocaml_create_onig_syntax_posix_extended"
-  let posix_extended = create_posix_extended ()
+  external get_posix_extended : unit -> t =
+    "ocaml_get_onig_syntax_posix_extended"
+  let posix_extended = get_posix_extended ()
 
-  external create_emacs : unit -> t =
-    "ocaml_create_onig_syntax_emacs"
-  let emacs = create_emacs ()
+  external get_emacs : unit -> t =
+    "ocaml_get_onig_syntax_emacs"
+  let emacs = get_emacs ()
 
-  external create_grep : unit -> t =
-    "ocaml_create_onig_syntax_grep"
-  let grep = create_grep ()
+  external get_grep : unit -> t =
+    "ocaml_get_onig_syntax_grep"
+  let grep = get_grep ()
 
-  external create_gnu_regex : unit -> t =
-    "ocaml_create_onig_syntax_gnu_regex"
-  let gnu_regex = create_gnu_regex ()
+  external get_gnu_regex : unit -> t =
+    "ocaml_get_onig_syntax_gnu_regex"
+  let gnu_regex = get_gnu_regex ()
 
-  external create_java : unit -> t =
-    "ocaml_create_onig_syntax_java"
-  let java = create_java ()
+  external get_java : unit -> t =
+    "ocaml_get_onig_syntax_java"
+  let java = get_java ()
 
-  external create_perl : unit -> t =
-    "ocaml_create_onig_syntax_perl"
-  let perl = create_perl ()
+  external get_perl : unit -> t =
+    "ocaml_get_onig_syntax_perl"
+  let perl = get_perl ()
 
-  external create_perl_ng : unit -> t =
-    "ocaml_create_onig_syntax_perl_ng"
-  let perl_ng = create_perl_ng ()
+  external get_perl_ng : unit -> t =
+    "ocaml_get_onig_syntax_perl_ng"
+  let perl_ng = get_perl_ng ()
 
-  external create_oniguruma : unit -> t =
-    "ocaml_create_onig_syntax_oniguruma"
-  let oniguruma = create_oniguruma ()
+  external get_default : unit -> t =
+    "ocaml_get_onig_syntax_default"
+  let default = get_default ()
 end
 
 module Region = struct
