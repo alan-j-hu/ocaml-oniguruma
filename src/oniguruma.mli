@@ -58,10 +58,6 @@ module Options : sig
   val negate_singleline : compile_time t
   val dont_capture_group : compile_time t
   val capture_group : compile_time t
-  val word_is_ascii : compile_time t
-  val digit_is_ascii : compile_time t
-  val space_is_ascii : compile_time t
-  val posix_is_ascii : compile_time t
 
   type search_time
   (** Represents search-time options. *)

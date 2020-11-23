@@ -47,15 +47,11 @@ module Options = struct
   let negate_singleline = option 7
   let dont_capture_group = option 8
   let capture_group = option 9
-  let word_is_ascii = option 10
-  let digit_is_ascii = option 11
-  let space_is_ascii = option 12
-  let posix_is_ascii = option 13
 
   type search_time
 
-  let notbol = option 14
-  let noteol = option 15
+  let notbol = option 10
+  let noteol = option 11
 end
 
 module Syntax = struct

@@ -121,12 +121,8 @@ OnigOptionType option(int v)
     case 7: return ONIG_OPTION_NEGATE_SINGLELINE;
     case 8: return ONIG_OPTION_DONT_CAPTURE_GROUP;
     case 9: return ONIG_OPTION_CAPTURE_GROUP;
-    case 10: return ONIG_OPTION_WORD_IS_ASCII;
-    case 11: return ONIG_OPTION_DIGIT_IS_ASCII;
-    case 12: return ONIG_OPTION_SPACE_IS_ASCII;
-    case 13: return ONIG_OPTION_POSIX_IS_ASCII;
-    case 14: return ONIG_OPTION_NOTBOL;
-    case 15: return ONIG_OPTION_NOTEOL;
+    case 10: return ONIG_OPTION_NOTBOL;
+    case 11: return ONIG_OPTION_NOTEOL;
     }
     caml_raise_with_string(*ocaml_Failure_exn, "option: Unreachable");
 }
