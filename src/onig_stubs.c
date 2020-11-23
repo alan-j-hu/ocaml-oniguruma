@@ -10,12 +10,29 @@
 #define Regex_val(v) (*((regex_t **) Data_custom_val(v)))
 #define Region_val(v) (*((OnigRegion **) Data_custom_val(v)))
 
+#define WRAP(name, wrapped)                             \
+  CAMLprim value name(value unit)                       \
+  {                                                     \
+      CAMLparam1(unit);                                 \
+      CAMLlocal1(v);                                    \
+      v = caml_alloc_small(1, Abstract_tag);            \
+      Store_field(v, 0, (value) wrapped);               \
+      CAMLreturn(v);                                    \
+  }
+
 static const value* ocaml_onig_Error_exn = NULL;
+static const value* ocaml_Invalid_argument_exn = NULL;
+static const value* ocaml_Failure_exn = NULL;
 
 CAMLprim value ocaml_onig_initialize(value unit)
 {
     CAMLparam1(unit);
-    ocaml_onig_Error_exn = caml_named_value("oniguruma exn");
+    ocaml_onig_Error_exn =
+        caml_named_value("Oniguruma.Error");
+    ocaml_Invalid_argument_exn =
+        caml_named_value("Oniguruma.Invalid_argument");
+    ocaml_Failure_exn =
+        caml_named_value("Oniguruma.Failure");
     OnigEncoding use_encodings[] = {
         ONIG_ENCODING_ASCII,
         ONIG_ENCODING_ISO_8859_1,
@@ -61,32 +78,19 @@ CAMLprim value ocaml_onig_end(value unit)
     CAMLreturn(unit);
 }
 
-CAMLprim value ocaml_create_onig_encoding_ascii(value unit)
-{
-    CAMLparam1(unit);
-    CAMLlocal1(v);
-    v = caml_alloc_small(1, Abstract_tag);
-    Store_field(v, 0, (value) ONIG_ENCODING_ASCII);
-    CAMLreturn(v);
-}
+WRAP(ocaml_create_onig_encoding_ascii, ONIG_ENCODING_ASCII)
+WRAP(ocaml_create_onig_encoding_utf8, ONIG_ENCODING_UTF8)
 
-CAMLprim value ocaml_create_onig_encoding_utf8(value unit)
-{
-    CAMLparam1(unit);
-    CAMLlocal1(v);
-    v = caml_alloc_small(1, Abstract_tag);
-    Store_field(v, 0, (value) ONIG_ENCODING_UTF8);
-    CAMLreturn(v);
-}
-
-CAMLprim value ocaml_create_onig_syntax_oniguruma(value unit)
-{
-    CAMLparam1(unit);
-    CAMLlocal1(v);
-    v = caml_alloc_small(1, Abstract_tag);
-    Store_field(v, 0, (value) ONIG_SYNTAX_ONIGURUMA);
-    CAMLreturn(v);
-}
+WRAP(ocaml_create_onig_syntax_asis, ONIG_SYNTAX_ASIS)
+WRAP(ocaml_create_onig_syntax_posix_basic, ONIG_SYNTAX_POSIX_BASIC)
+WRAP(ocaml_create_onig_syntax_posix_extended, ONIG_SYNTAX_POSIX_EXTENDED)
+WRAP(ocaml_create_onig_syntax_emacs, ONIG_SYNTAX_EMACS)
+WRAP(ocaml_create_onig_syntax_grep, ONIG_SYNTAX_GREP)
+WRAP(ocaml_create_onig_syntax_gnu_regex, ONIG_SYNTAX_GNU_REGEX)
+WRAP(ocaml_create_onig_syntax_java, ONIG_SYNTAX_JAVA)
+WRAP(ocaml_create_onig_syntax_perl, ONIG_SYNTAX_PERL)
+WRAP(ocaml_create_onig_syntax_perl_ng, ONIG_SYNTAX_PERL_NG)
+WRAP(ocaml_create_onig_syntax_oniguruma, ONIG_SYNTAX_ONIGURUMA)
 
 static void finalize_regex_t(value v)
 {
@@ -94,7 +98,7 @@ static void finalize_regex_t(value v)
 }
 
 static struct custom_operations regex_ops = {
-    .identifier = "ocaml.oniguruma.t",
+    .identifier = "oniguruma.t",
     .finalize = finalize_regex_t,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -126,7 +130,7 @@ OnigOptionType option(int v)
     case 16: return ONIG_OPTION_NOTBOL;
     case 17: return ONIG_OPTION_NOTEOL;
     }
-    caml_raise_with_string(*ocaml_onig_Error_exn, "option: Unreachable");
+    caml_raise_with_string(*ocaml_Failure_exn, "option: Unreachable");
 }
 
 CAMLprim value ocaml_onig_option(value int_val)
@@ -181,7 +185,7 @@ static void finalize_region(value v)
 }
 
 static struct custom_operations region_ops = {
-    .identifier = "ocaml.oniguruma.region.t",
+    .identifier = "oniguruma.region.t",
     .finalize = finalize_region,
     .compare = custom_compare_default,
     .compare_ext = custom_compare_ext_default,
@@ -290,7 +294,7 @@ CAMLprim value ocaml_onig_capture_beg(value region_val, value idx_val)
         CAMLreturn(Val_int(region->beg[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn,
+        *ocaml_Invalid_argument_exn,
         "capture_beg: Index out of bounds");
 }
 
@@ -303,6 +307,20 @@ CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_onig_Error_exn,
+        *ocaml_Invalid_argument_exn,
         "capture_end: Index out of bounds");
+}
+
+CAMLprim value ocaml_onig_num_captures(value regex)
+{
+    CAMLparam1(regex);
+    CAMLreturn(Val_int(onig_number_of_captures(Regex_val(regex))));
+}
+
+CAMLprim value ocaml_onig_version(value unit)
+{
+    CAMLparam1(unit);
+    CAMLlocal1(str);
+    str = caml_copy_string(onig_version());
+    CAMLreturn(str);
 }

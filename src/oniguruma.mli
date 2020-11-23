@@ -8,7 +8,8 @@ type _ t
     so that regular expressions for different encodings may not be mixed. *)
 
 exception Error of string
-[@warn_on_literal_pattern]
+[@ocaml.warn_on_literal_pattern]
+(** The exception raised upon Oniguruma errors. *)
 
 module Encoding : sig
   type _ t
@@ -26,8 +27,6 @@ end
 (** Character encodings. *)
 
 module Options : sig
-  (** Manipulation of regex options. *)
-
   type _ t
   (** An option. The phantom type parameter indicates whether it is
       compile-time or search-time. *)
@@ -72,11 +71,21 @@ module Options : sig
   val notbol : search_time t
   val noteol : search_time t
 end
+(** Regex options. *)
 
 module Syntax : sig
   type t
   (** The regular expression dialect. *)
 
+  val asis : t
+  val posix_basic : t
+  val posix_extended : t
+  val emacs : t
+  val grep : t
+  val gnu_regex : t
+  val java : t
+  val perl : t
+  val perl_ng : t
   val oniguruma : t
 end
 (** The syntax type. *)
@@ -89,17 +98,18 @@ module Region : sig
   (** [length region] gets the number of captures. *)
 
   external capture_beg : t -> int -> int = "ocaml_onig_capture_beg"
-  (** [capture_beg region idx] gets the string position of the capture group at
-      the index. The string position is an offset in bytes. Returns -1 if the
-      capture group wasn't found. Raises {!exception:Error} if the index is
-      out of bounds. *)
+  (** [capture_beg region idx] gets the string position of the capture at the
+      index. The capture at index 0 is the entire match. The string position is
+      an offset in bytes. Returns -1 if the capture group wasn't found. Raises
+      {!exception:Invalid_argument} if the index is out of bounds. *)
 
   external capture_end : t -> int -> int = "ocaml_onig_capture_end"
-  (** [capture_end region idx] gets the string position of the capture group at
-      the index. The string position is an offset in bytes. Returns -1 if the
-      capture group wasn't found. Raises {!exception:Error} if the index is
-      out of bounds. *)
+  (** [capture_end region idx] gets the string position of the capture at the
+      index. The capture at index 0 is the entire match. The string position is
+      an offset in bytes. Returns -1 if the capture group wasn't found. Raises
+      {!exception:Invalid_argument} if the index is out of bounds. *)
 end
+(** Match results. *)
 
 external create
   : string -> Options.compile_time Options.t -> 'enc Encoding.t -> Syntax.t
@@ -132,3 +142,11 @@ external match_
     @param string The string to match against
     @param pos The position of the string to match at, as a byte offset
     @param options Match options *)
+
+external num_captures : _ t -> int = "ocaml_onig_num_captures"
+(** The number of capture groups in the regex. The entire match itself does
+    not count as a capture group. *)
+
+val version : string
+(** The Oniguruma version string. This is the version of the underlying C
+    library, not this OCaml binding library. *)

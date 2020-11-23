@@ -1,8 +1,8 @@
 let check_out_of_bounds regs idx =
   (try ignore (Oniguruma.Region.capture_beg regs idx); assert false with
-   | Oniguruma.Error _ -> ());
+   | Invalid_argument _ -> ());
   (try ignore (Oniguruma.Region.capture_end regs idx); assert false with
-   | Oniguruma.Error _ -> ())
+   | Invalid_argument _ -> ())
 
 let check_against regs exp_regs =
   let num_regs = Oniguruma.Region.length regs in

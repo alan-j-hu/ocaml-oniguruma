@@ -7,7 +7,12 @@ external initialize : unit -> unit = "ocaml_onig_initialize"
 external cleanup : unit -> unit = "ocaml_onig_end"
 
 let () =
-  Callback.register_exception "oniguruma exn" (Error "");
+  Callback.register_exception
+    "Oniguruma.Error" (Error "");
+  Callback.register_exception
+    "Oniguruma.Invalid_argument" (Invalid_argument "");
+  Callback.register_exception
+    "Oniguruma.Failure" (Failure "");
   initialize ();
   at_exit cleanup
 
@@ -58,9 +63,44 @@ end
 module Syntax = struct
   type t
 
+  external create_asis : unit -> t =
+    "ocaml_create_onig_syntax_asis"
+  let asis = create_asis ()
+
+  external create_posix_basic : unit -> t =
+    "ocaml_create_onig_syntax_posix_basic"
+  let posix_basic = create_posix_basic ()
+
+  external create_posix_extended : unit -> t =
+    "ocaml_create_onig_syntax_posix_extended"
+  let posix_extended = create_posix_extended ()
+
+  external create_emacs : unit -> t =
+    "ocaml_create_onig_syntax_emacs"
+  let emacs = create_emacs ()
+
+  external create_grep : unit -> t =
+    "ocaml_create_onig_syntax_grep"
+  let grep = create_grep ()
+
+  external create_gnu_regex : unit -> t =
+    "ocaml_create_onig_syntax_gnu_regex"
+  let gnu_regex = create_gnu_regex ()
+
+  external create_java : unit -> t =
+    "ocaml_create_onig_syntax_java"
+  let java = create_java ()
+
+  external create_perl : unit -> t =
+    "ocaml_create_onig_syntax_perl"
+  let perl = create_perl ()
+
+  external create_perl_ng : unit -> t =
+    "ocaml_create_onig_syntax_perl_ng"
+  let perl_ng = create_perl_ng ()
+
   external create_oniguruma : unit -> t =
     "ocaml_create_onig_syntax_oniguruma"
-
   let oniguruma = create_oniguruma ()
 end
 
@@ -87,3 +127,8 @@ external search
 external match_
   : 'enc t -> string -> int -> Options.search_time Options.t -> Region.t option
   = "ocaml_onig_match"
+
+external num_captures : _ t -> int = "ocaml_onig_num_captures"
+
+external version_f : unit -> string = "ocaml_onig_version"
+let version = version_f ()
