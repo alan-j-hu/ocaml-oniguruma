@@ -10,8 +10,9 @@
 
 (package
  (name oniguruma)
- (synopsis "Bindings to the Oniguruma regex library")
+ (synopsis "Bindings to the Oniguruma regular expression library")
  (description "Bindings to the Oniguruma regular expression library.")
+ (tags (regex))
  (depends
   (conf-oniguruma (= 1))
   (ocaml (>= 4.08))))
