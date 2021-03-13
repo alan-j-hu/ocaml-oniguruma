@@ -210,7 +210,7 @@ CAMLprim value ocaml_onig_search(
     region_val = caml_alloc_custom(&region_ops, sizeof(OnigRegion*), 0, 1);
     Region_val(region_val) = region;
     /* Oniguruma library should handle out-of-bounds ranges */
-    int ret = onig_search(
+    const int result = onig_search(
         reg,
         string,
         string + string_length,
@@ -218,18 +218,18 @@ CAMLprim value ocaml_onig_search(
         string + search_end,
         region,
         Long_val(options_val));
-    if(ret >= 0) {
+    if(result >= 0) {
         /* option_val : region option */
         /* Must store all fields immediately after small allocation! */
         option_val = caml_alloc_small(1, 0);
         Store_field(option_val, 0, region_val);
         CAMLreturn(option_val);
     }
-    if(ret == ONIG_MISMATCH) {
+    if(result == ONIG_MISMATCH) {
         CAMLreturn(Val_int(0));
     }
     UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-    onig_error_code_to_str(err_buf, ret);
+    onig_error_code_to_str(err_buf, result);
     caml_raise_with_string(*ocaml_onig_Error_exn, err_buf);
 }
 
@@ -251,25 +251,25 @@ CAMLprim value ocaml_onig_match(
     region_val = caml_alloc_custom(&region_ops, sizeof(OnigRegion*), 0, 1);
     Region_val(region_val) = region;
     /* Oniguruma library should handle out-of-bounds ranges */
-    int ret = onig_match(
+    const int result = onig_match(
         reg,
         string,
         string + string_length,
         string + search_at,
         region,
         Long_val(options_val));
-    if(ret >= 0) {
+    if(result >= 0) {
         /* option_val : region option */
         /* Must store all fields immediately after small allocation! */
         option_val = caml_alloc_small(1, 0);
         Store_field(option_val, 0, region_val);
         CAMLreturn(option_val);
     }
-    if(ret == ONIG_MISMATCH) {
+    if(result == ONIG_MISMATCH) {
         CAMLreturn(Val_int(0));
     }
     UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-    onig_error_code_to_str(err_buf, ret);
+    onig_error_code_to_str(err_buf, result);
     caml_raise_with_string(*ocaml_onig_Error_exn, err_buf);
 }
 
@@ -282,8 +282,8 @@ CAMLprim value ocaml_onig_region_length(value region)
 CAMLprim value ocaml_onig_capture_beg(value region_val, value idx_val)
 {
     CAMLparam2(region_val, idx_val);
-    OnigRegion* region = Region_val(region_val);
-    long int idx = Long_val(idx_val);
+    const OnigRegion* region = Region_val(region_val);
+    const long int idx = Long_val(idx_val);
     if(idx >= 0 && idx < region->num_regs) {
         CAMLreturn(Val_int(region->beg[idx]));
     }
@@ -295,8 +295,8 @@ CAMLprim value ocaml_onig_capture_beg(value region_val, value idx_val)
 CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
 {
     CAMLparam2(region_val, idx_val);
-    OnigRegion* region = Region_val(region_val);
-    long int idx = Long_val(idx_val);
+    const OnigRegion* region = Region_val(region_val);
+    const long int idx = Long_val(idx_val);
     if(idx >= 0 && idx < region->num_regs) {
         CAMLreturn(Val_int(region->end[idx]));
     }
