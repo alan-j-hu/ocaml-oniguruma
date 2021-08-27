@@ -15,4 +15,5 @@
  (tags (regex))
  (depends
   (conf-oniguruma (= 1))
-  (ocaml (>= 4.08))))
+  (ocaml (>= 4.08))
+  (dune-configurator (and (>= 2.9) :build))))
