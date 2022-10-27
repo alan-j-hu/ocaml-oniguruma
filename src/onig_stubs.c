@@ -311,6 +311,33 @@ CAMLprim value ocaml_onig_num_captures(value regex)
     CAMLreturn(Val_int(onig_number_of_captures(Regex_val(regex))));
 }
 
+CAMLprim value ocaml_onig_name_to_group_numbers(
+    value regex_val,
+    value string_val)
+{
+    CAMLparam2(regex_val, string_val);
+    CAMLlocal1(arr_val);
+    regex_t* const regex = Regex_val(regex_val);
+    const UChar* const string = (const UChar*) String_val(string_val);
+    const uintnat string_length = caml_string_length(string_val);
+    int* num_list;
+    int length = onig_name_to_group_numbers(
+        regex,
+        string,
+        string + string_length,
+        &num_list);
+    /* As far as I can tell, the documentation's claim that the function
+       returns -1 if the name is not found is incorrect. */
+    if (length < 0) {
+        length = 0;
+    }
+    arr_val = caml_alloc(length, 0);
+    for (int i = 0; i < length; ++i) {
+        Store_field(arr_val, i, Val_int(num_list[i]));
+    }
+    CAMLreturn(arr_val);
+}
+
 CAMLprim value ocaml_onig_version(value unit)
 {
     CAMLparam1(unit);

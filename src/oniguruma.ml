@@ -124,5 +124,9 @@ external match_
 
 external num_captures : _ t -> int = "ocaml_onig_num_captures"
 
+external name_to_group_numbers
+  : _ t -> string -> int array
+  = "ocaml_onig_name_to_group_numbers"
+
 external version_f : unit -> string = "ocaml_onig_version"
 let version = version_f ()

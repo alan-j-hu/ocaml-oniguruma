@@ -45,4 +45,4 @@ let () =
   test_search_out_of_bounds "abc" "abc" (-1) 3;
   test_search_out_of_bounds "abc" "a" 0 2;
   test_match_out_of_bounds "a" "a" 2;
-  test_match_out_of_bounds "a" "a" (-1)
+  test_match_out_of_bounds "a" "a" (-1);

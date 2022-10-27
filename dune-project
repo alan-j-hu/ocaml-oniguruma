@@ -1,6 +1,6 @@
 (lang dune 2.7)
 (generate_opam_files true)
-(version 0.1.0)
+(version 0.1.1)
 (authors "Alan Hu <alanh@ccs.neu.edu>")
 (maintainers "Alan Hu <alanh@ccs.neu.edu>")
 (license BSD-2-Clause)

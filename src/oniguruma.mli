@@ -141,6 +141,12 @@ external num_captures : _ t -> int = "ocaml_onig_num_captures"
 (** The number of capture groups in the regex. The entire match itself does
     not count as a capture group. *)
 
+external name_to_group_numbers
+  : _ t -> string -> int array
+  = "ocaml_onig_name_to_group_numbers"
+(** [name_to_group_numbers regex name] is the group number array of [name] in
+    [regex]. *)
+
 val version : string
 (** The Oniguruma version string. This is the version of the underlying C
     library, not this OCaml binding library. *)
