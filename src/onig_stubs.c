@@ -157,7 +157,7 @@ CAMLprim value ocaml_onig_new(
         &err_info);
     if(err_code != ONIG_NORMAL) {
         UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-        int error_length = onig_error_code_to_str(
+        const int error_length = onig_error_code_to_str(
             err_buf, err_code, &err_info);
         error = caml_copy_string((const char*) err_buf);
         /* Must store all fields immediately after small allocation! */

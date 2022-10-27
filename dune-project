@@ -4,7 +4,7 @@
 (authors "Alan Hu <alanh@ccs.neu.edu>")
 (maintainers "Alan Hu <alanh@ccs.neu.edu>")
 (license BSD-2-Clause)
-(documentation https://alan-j-hu.github.io/ocaml-oniguruma/)
+(documentation https://v3.ocaml.org/p/oniguruma/)
 (source (github alan-j-hu/ocaml-oniguruma))
 (name oniguruma)
 
