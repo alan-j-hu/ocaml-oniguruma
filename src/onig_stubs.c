@@ -7,18 +7,18 @@
 #include <caml/mlvalues.h>
 #include <oniguruma.h>
 
-#define Regex_val(v) (*((regex_t **) Data_custom_val(v)))
-#define Region_val(v) (*((OnigRegion **) Data_custom_val(v)))
+#define Regex_val(v) (*((regex_t**)Data_custom_val(v)))
+#define Region_val(v) (*((OnigRegion**)Data_custom_val(v)))
 
-#define WRAP(name, wrapped)                             \
-  CAMLprim value name(value unit)                       \
-  {                                                     \
-      CAMLparam1(unit);                                 \
-      CAMLlocal1(v);                                    \
-      v = caml_alloc_small(1, Abstract_tag);            \
-      Field(v, 0) = (value) wrapped;                    \
-      CAMLreturn(v);                                    \
-  }
+#define WRAP(name, wrapped)                                                    \
+    CAMLprim value name(value unit)                                            \
+    {                                                                          \
+        CAMLparam1(unit);                                                      \
+        CAMLlocal1(v);                                                         \
+        v = caml_alloc_small(1, Abstract_tag);                                 \
+        Field(v, 0) = (value)wrapped;                                          \
+        CAMLreturn(v);                                                         \
+    }
 
 static const value* ocaml_onig_Error_exn = NULL;
 static const value* ocaml_Invalid_argument_exn = NULL;
@@ -27,47 +27,27 @@ static const value* ocaml_Failure_exn = NULL;
 CAMLprim value ocaml_onig_initialize(value unit)
 {
     CAMLparam1(unit);
-    ocaml_onig_Error_exn =
-        caml_named_value("Oniguruma.Error");
-    ocaml_Invalid_argument_exn =
-        caml_named_value("Oniguruma.Invalid_argument");
-    ocaml_Failure_exn =
-        caml_named_value("Oniguruma.Failure");
+    ocaml_onig_Error_exn = caml_named_value("Oniguruma.Error");
+    ocaml_Invalid_argument_exn = caml_named_value("Oniguruma.Invalid_argument");
+    ocaml_Failure_exn = caml_named_value("Oniguruma.Failure");
     OnigEncoding use_encodings[] = {
-        ONIG_ENCODING_ASCII,
-        ONIG_ENCODING_ISO_8859_1,
-        ONIG_ENCODING_ISO_8859_2,
-        ONIG_ENCODING_ISO_8859_3,
-        ONIG_ENCODING_ISO_8859_4,
-        ONIG_ENCODING_ISO_8859_5,
-        ONIG_ENCODING_ISO_8859_6,
-        ONIG_ENCODING_ISO_8859_7,
-        ONIG_ENCODING_ISO_8859_8,
-        ONIG_ENCODING_ISO_8859_9,
-        ONIG_ENCODING_ISO_8859_10,
-        ONIG_ENCODING_ISO_8859_11,
-        ONIG_ENCODING_ISO_8859_13,
-        ONIG_ENCODING_ISO_8859_14,
-        ONIG_ENCODING_ISO_8859_15,
-        ONIG_ENCODING_ISO_8859_16,
-        ONIG_ENCODING_UTF8,
-        ONIG_ENCODING_UTF16_BE,
-        ONIG_ENCODING_UTF16_LE,
-        ONIG_ENCODING_UTF32_BE,
-        ONIG_ENCODING_UTF32_LE,
-        ONIG_ENCODING_EUC_JP,
-        ONIG_ENCODING_EUC_TW,
-        ONIG_ENCODING_EUC_KR,
-        ONIG_ENCODING_EUC_CN,
-        ONIG_ENCODING_SJIS,
-        ONIG_ENCODING_KOI8_R,
-        ONIG_ENCODING_CP1251,
-        ONIG_ENCODING_BIG5,
-        ONIG_ENCODING_GB18030
-    };
+        ONIG_ENCODING_ASCII,       ONIG_ENCODING_ISO_8859_1,
+        ONIG_ENCODING_ISO_8859_2,  ONIG_ENCODING_ISO_8859_3,
+        ONIG_ENCODING_ISO_8859_4,  ONIG_ENCODING_ISO_8859_5,
+        ONIG_ENCODING_ISO_8859_6,  ONIG_ENCODING_ISO_8859_7,
+        ONIG_ENCODING_ISO_8859_8,  ONIG_ENCODING_ISO_8859_9,
+        ONIG_ENCODING_ISO_8859_10, ONIG_ENCODING_ISO_8859_11,
+        ONIG_ENCODING_ISO_8859_13, ONIG_ENCODING_ISO_8859_14,
+        ONIG_ENCODING_ISO_8859_15, ONIG_ENCODING_ISO_8859_16,
+        ONIG_ENCODING_UTF8,        ONIG_ENCODING_UTF16_BE,
+        ONIG_ENCODING_UTF16_LE,    ONIG_ENCODING_UTF32_BE,
+        ONIG_ENCODING_UTF32_LE,    ONIG_ENCODING_EUC_JP,
+        ONIG_ENCODING_EUC_TW,      ONIG_ENCODING_EUC_KR,
+        ONIG_ENCODING_EUC_CN,      ONIG_ENCODING_SJIS,
+        ONIG_ENCODING_KOI8_R,      ONIG_ENCODING_CP1251,
+        ONIG_ENCODING_BIG5,        ONIG_ENCODING_GB18030};
     onig_initialize(
-        use_encodings,
-        sizeof(use_encodings) / sizeof(use_encodings[0]));
+        use_encodings, sizeof(use_encodings) / sizeof(use_encodings[0]));
     CAMLreturn(Val_unit);
 }
 
@@ -92,10 +72,7 @@ WRAP(ocaml_get_onig_syntax_perl, ONIG_SYNTAX_PERL)
 WRAP(ocaml_get_onig_syntax_perl_ng, ONIG_SYNTAX_PERL_NG)
 WRAP(ocaml_get_onig_syntax_default, ONIG_SYNTAX_DEFAULT)
 
-static void finalize_regex_t(value v)
-{
-    onig_free(Regex_val(v));
-}
+static void finalize_regex_t(value v) { onig_free(Regex_val(v)); }
 
 static struct custom_operations regex_ops = {
     .identifier = "oniguruma.t",
@@ -105,24 +82,36 @@ static struct custom_operations regex_ops = {
     .hash = custom_hash_default,
     .serialize = custom_serialize_default,
     .deserialize = custom_deserialize_default,
-    .fixed_length = custom_fixed_length_default
+    .fixed_length = custom_fixed_length_default,
 };
 
 OnigOptionType option(int v)
 {
-    switch(v) {
-    case 0: return ONIG_OPTION_NONE;
-    case 1: return ONIG_OPTION_SINGLELINE;
-    case 2: return ONIG_OPTION_MULTILINE;
-    case 3: return ONIG_OPTION_IGNORECASE;
-    case 4: return ONIG_OPTION_EXTEND;
-    case 5: return ONIG_OPTION_FIND_LONGEST;
-    case 6: return ONIG_OPTION_FIND_NOT_EMPTY;
-    case 7: return ONIG_OPTION_NEGATE_SINGLELINE;
-    case 8: return ONIG_OPTION_DONT_CAPTURE_GROUP;
-    case 9: return ONIG_OPTION_CAPTURE_GROUP;
-    case 10: return ONIG_OPTION_NOTBOL;
-    case 11: return ONIG_OPTION_NOTEOL;
+    switch (v) {
+    case 0:
+        return ONIG_OPTION_NONE;
+    case 1:
+        return ONIG_OPTION_SINGLELINE;
+    case 2:
+        return ONIG_OPTION_MULTILINE;
+    case 3:
+        return ONIG_OPTION_IGNORECASE;
+    case 4:
+        return ONIG_OPTION_EXTEND;
+    case 5:
+        return ONIG_OPTION_FIND_LONGEST;
+    case 6:
+        return ONIG_OPTION_FIND_NOT_EMPTY;
+    case 7:
+        return ONIG_OPTION_NEGATE_SINGLELINE;
+    case 8:
+        return ONIG_OPTION_DONT_CAPTURE_GROUP;
+    case 9:
+        return ONIG_OPTION_CAPTURE_GROUP;
+    case 10:
+        return ONIG_OPTION_NOTBOL;
+    case 11:
+        return ONIG_OPTION_NOTEOL;
     }
     caml_raise_with_string(*ocaml_Failure_exn, "option: Unreachable");
 }
@@ -133,17 +122,14 @@ CAMLprim value ocaml_onig_option(value int_val)
     CAMLreturn(Val_int(option(Int_val(int_val))));
 }
 
-CAMLprim value ocaml_onig_new(
-    value pattern_val,
-    value options,
-    value enc,
-    value syntax)
+CAMLprim value
+ocaml_onig_new(value pattern_val, value options, value enc, value syntax)
 {
     CAMLparam4(pattern_val, options, enc, syntax);
     CAMLlocal3(regex_val, error, result);
 
     regex_t* regex;
-    const UChar* const pattern = (const UChar*) String_val(pattern_val);
+    const UChar* const pattern = (const UChar*)String_val(pattern_val);
     const uintnat pattern_length = caml_string_length(pattern_val);
 
     OnigErrorInfo err_info;
@@ -152,14 +138,14 @@ CAMLprim value ocaml_onig_new(
         pattern,
         pattern + pattern_length,
         Int_val(options),
-        *((OnigEncoding*) Data_abstract_val(enc)),
-        *((OnigSyntaxType**) Data_abstract_val(syntax)),
+        *((OnigEncoding*)Data_abstract_val(enc)),
+        *((OnigSyntaxType**)Data_abstract_val(syntax)),
         &err_info);
-    if(err_code != ONIG_NORMAL) {
+    if (err_code != ONIG_NORMAL) {
         UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-        const int error_length = onig_error_code_to_str(
-            err_buf, err_code, &err_info);
-        error = caml_copy_string((const char*) err_buf);
+        const int error_length =
+            onig_error_code_to_str(err_buf, err_code, &err_info);
+        error = caml_copy_string((const char*)err_buf);
         /* Must store all fields immediately after small allocation! */
         result = caml_alloc_small(1, 1);
         Field(result, 0) = error;
@@ -173,10 +159,7 @@ CAMLprim value ocaml_onig_new(
     CAMLreturn(result);
 }
 
-static void finalize_region(value v)
-{
-    onig_region_free(Region_val(v), 1);
-}
+static void finalize_region(value v) { onig_region_free(Region_val(v), 1); }
 
 static struct custom_operations region_ops = {
     .identifier = "oniguruma.region.t",
@@ -186,7 +169,7 @@ static struct custom_operations region_ops = {
     .hash = custom_hash_default,
     .serialize = custom_serialize_default,
     .deserialize = custom_deserialize_default,
-    .fixed_length = custom_fixed_length_default
+    .fixed_length = custom_fixed_length_default,
 };
 
 CAMLprim value ocaml_onig_search(
@@ -201,7 +184,7 @@ CAMLprim value ocaml_onig_search(
     CAMLlocal2(region_val, option_val);
 
     regex_t* const regex = Regex_val(regex_val);
-    const UChar* const string = (const UChar*) String_val(string_val);
+    const UChar* const string = (const UChar*)String_val(string_val);
     const uintnat string_length = caml_string_length(string_val);
     const int search_start = Int_val(search_start_val);
     const int search_end = Int_val(search_end_val);
@@ -218,13 +201,13 @@ CAMLprim value ocaml_onig_search(
         string + search_end,
         region,
         Long_val(options_val));
-    if(result == ONIG_MISMATCH) {
+    if (result == ONIG_MISMATCH) {
         CAMLreturn(Val_int(0));
     }
-    if(result < 0) {
+    if (result < 0) {
         UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
         onig_error_code_to_str(err_buf, result);
-        caml_raise_with_string(*ocaml_onig_Error_exn, (const char*) err_buf);
+        caml_raise_with_string(*ocaml_onig_Error_exn, (const char*)err_buf);
     }
     /* option_val : region option */
     /* Must store all fields immediately after small allocation! */
@@ -243,7 +226,7 @@ CAMLprim value ocaml_onig_match(
     CAMLlocal2(region_val, option_val);
 
     regex_t* const regex = Regex_val(regex_val);
-    const UChar* const string = (const UChar*) String_val(string_val);
+    const UChar* const string = (const UChar*)String_val(string_val);
     const uintnat string_length = caml_string_length(string_val);
     const int search_at = Int_val(search_at_val);
 
@@ -258,13 +241,13 @@ CAMLprim value ocaml_onig_match(
         string + search_at,
         region,
         Long_val(options_val));
-    if(result == ONIG_MISMATCH) {
+    if (result == ONIG_MISMATCH) {
         CAMLreturn(Val_int(0));
     }
-    if(result < 0) {
+    if (result < 0) {
         UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
         onig_error_code_to_str(err_buf, result);
-        caml_raise_with_string(*ocaml_onig_Error_exn, (const char*) err_buf);
+        caml_raise_with_string(*ocaml_onig_Error_exn, (const char*)err_buf);
     }
     /* option_val : region option */
     /* Must store all fields immediately after small allocation! */
@@ -284,12 +267,11 @@ CAMLprim value ocaml_onig_capture_beg(value region_val, value idx_val)
     CAMLparam2(region_val, idx_val);
     const OnigRegion* const region = Region_val(region_val);
     const long int idx = Long_val(idx_val);
-    if(idx >= 0 && idx < region->num_regs) {
+    if (idx >= 0 && idx < region->num_regs) {
         CAMLreturn(Val_int(region->beg[idx]));
     }
     caml_raise_with_string(
-        *ocaml_Invalid_argument_exn,
-        "capture_beg: Index out of bounds");
+        *ocaml_Invalid_argument_exn, "capture_beg: Index out of bounds");
 }
 
 CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
@@ -297,12 +279,11 @@ CAMLprim value ocaml_onig_capture_end(value region_val, value idx_val)
     CAMLparam2(region_val, idx_val);
     const OnigRegion* const region = Region_val(region_val);
     const long int idx = Long_val(idx_val);
-    if(idx >= 0 && idx < region->num_regs) {
+    if (idx >= 0 && idx < region->num_regs) {
         CAMLreturn(Val_int(region->end[idx]));
     }
     caml_raise_with_string(
-        *ocaml_Invalid_argument_exn,
-        "capture_end: Index out of bounds");
+        *ocaml_Invalid_argument_exn, "capture_end: Index out of bounds");
 }
 
 CAMLprim value ocaml_onig_num_captures(value regex)
@@ -311,21 +292,17 @@ CAMLprim value ocaml_onig_num_captures(value regex)
     CAMLreturn(Val_int(onig_number_of_captures(Regex_val(regex))));
 }
 
-CAMLprim value ocaml_onig_name_to_group_numbers(
-    value regex_val,
-    value string_val)
+CAMLprim value
+ocaml_onig_name_to_group_numbers(value regex_val, value string_val)
 {
     CAMLparam2(regex_val, string_val);
     CAMLlocal1(arr_val);
     regex_t* const regex = Regex_val(regex_val);
-    const UChar* const string = (const UChar*) String_val(string_val);
+    const UChar* const string = (const UChar*)String_val(string_val);
     const uintnat string_length = caml_string_length(string_val);
     int* num_list;
     int length = onig_name_to_group_numbers(
-        regex,
-        string,
-        string + string_length,
-        &num_list);
+        regex, string, string + string_length, &num_list);
     /* As far as I can tell, the documentation's claim that the function
        returns -1 if the name is not found is incorrect. */
     if (length < 0) {
