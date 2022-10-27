@@ -16,7 +16,7 @@
       CAMLparam1(unit);                                 \
       CAMLlocal1(v);                                    \
       v = caml_alloc_small(1, Abstract_tag);            \
-      Store_field(v, 0, (value) wrapped);               \
+      Field(v, 0) = (value) wrapped;                    \
       CAMLreturn(v);                                    \
   }
 
@@ -162,14 +162,14 @@ CAMLprim value ocaml_onig_new(
         error = caml_copy_string((const char*) err_buf);
         /* Must store all fields immediately after small allocation! */
         result = caml_alloc_small(1, 1);
-        Store_field(result, 0, error);
+        Field(result, 0) = error;
         CAMLreturn(result);
     }
     regex_val = caml_alloc_custom(&regex_ops, sizeof(regex_t*), 0, 1);
     Regex_val(regex_val) = regex;
     /* Must store all fields immediately after small allocation! */
     result = caml_alloc_small(1, 0);
-    Store_field(result, 0, regex_val);
+    Field(result, 0) = regex_val;
     CAMLreturn(result);
 }
 
@@ -229,7 +229,7 @@ CAMLprim value ocaml_onig_search(
     /* option_val : region option */
     /* Must store all fields immediately after small allocation! */
     option_val = caml_alloc_small(1, 0);
-    Store_field(option_val, 0, region_val);
+    Field(option_val, 0) = region_val;
     CAMLreturn(option_val);
 }
 
@@ -269,7 +269,7 @@ CAMLprim value ocaml_onig_match(
     /* option_val : region option */
     /* Must store all fields immediately after small allocation! */
     option_val = caml_alloc_small(1, 0);
-    Store_field(option_val, 0, region_val);
+    Field(option_val, 0) = region_val;
     CAMLreturn(option_val);
 }
 
