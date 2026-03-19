@@ -112,6 +112,8 @@ OnigOptionType option(int v)
         return ONIG_OPTION_NOTBOL;
     case 11:
         return ONIG_OPTION_NOTEOL;
+    case 12:
+        return ONIG_OPTION_NOT_BEGIN_POSITION;
     }
     caml_raise_with_string(*ocaml_Failure_exn, "option: Unreachable");
 }
