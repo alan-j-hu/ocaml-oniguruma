@@ -64,6 +64,7 @@ module Options : sig
 
   val notbol : search_time t
   val noteol : search_time t
+  val not_begin_position : search_time t
 end
 (** Regex options. *)
 

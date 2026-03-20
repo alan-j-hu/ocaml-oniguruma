@@ -52,6 +52,7 @@ module Options = struct
 
   let notbol = option 10
   let noteol = option 11
+  let not_begin_position = option 12
 end
 
 module Syntax = struct
