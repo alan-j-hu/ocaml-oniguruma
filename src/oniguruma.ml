@@ -33,7 +33,7 @@ module Options = struct
 
   external option : int -> 'a t = "ocaml_onig_option"
 
-  let (<+>) = (lor)
+  let (<|>) = (lor)
   let none = option 0
 
   type compile_time
@@ -47,12 +47,21 @@ module Options = struct
   let negate_singleline = option 7
   let dont_capture_group = option 8
   let capture_group = option 9
+  let ignore_is_ascii = option 10
+  let word_is_ascii = option 11
+  let digit_is_ascii = option 12
+  let space_is_ascii = option 13
+  let posix_is_ascii = option 14
+  let text_segment_extended_grapheme_cluster = option 15
+  let text_segment_word = option 16
 
   type search_time
 
-  let notbol = option 10
-  let noteol = option 11
-  let not_begin_position = option 12
+  let notbol = option 101
+  let noteol = option 102
+  let not_begin_string = option 103
+  let not_end_string = option 104
+  let not_begin_position = option 105
 end
 
 module Syntax = struct

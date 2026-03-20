@@ -121,10 +121,28 @@ OnigOptionType option(int v)
     case 9:
         return ONIG_OPTION_CAPTURE_GROUP;
     case 10:
-        return ONIG_OPTION_NOTBOL;
+        return ONIG_OPTION_IGNORECASE_IS_ASCII;
     case 11:
-        return ONIG_OPTION_NOTEOL;
+        return ONIG_OPTION_WORD_IS_ASCII;
     case 12:
+        return ONIG_OPTION_DIGIT_IS_ASCII;
+    case 13:
+        return ONIG_OPTION_SPACE_IS_ASCII;
+    case 14:
+        return ONIG_OPTION_POSIX_IS_ASCII;
+    case 15:
+        return ONIG_OPTION_TEXT_SEGMENT_EXTENDED_GRAPHEME_CLUSTER;
+    case 16:
+        return ONIG_OPTION_TEXT_SEGMENT_WORD;
+    case 101:
+        return ONIG_OPTION_NOTBOL;
+    case 102:
+        return ONIG_OPTION_NOTEOL;
+    case 103:
+        return ONIG_OPTION_NOT_BEGIN_STRING;
+    case 104:
+        return ONIG_OPTION_NOT_END_STRING;
+    case 105:
         return ONIG_OPTION_NOT_BEGIN_POSITION;
     }
     caml_raise_with_string(*ocaml_Failure_exn, "option: Unreachable");

@@ -31,20 +31,20 @@ module Options : sig
   (** An option. The phantom type parameter indicates whether it is
       compile-time or search-time. *)
 
-  val (<+>) : 'a t -> 'a t -> 'a t
+  val (<|>) : 'a t -> 'a t -> 'a t
   (** Combines options.
 
       This operation is:
 
-      - Associative: [(x <+> y) <+> z = x <+> (y <+> z)]
-      - Commutative: [x <+> y = y <+> x]
-      - Idempotent: [x <+> x = x] *)
+      - Associative: [(x <|> y) <|> z = x <|> (y <|> z)]
+      - Commutative: [x <|> y = y <|> x]
+      - Idempotent: [x <|> x = x] *)
 
   val none : _ t
-  (** No options. The identity element of {!val:(<+>)}:
+  (** No options. The identity element of {!val:(<|>)}:
 
-      - [none <+> x = x]
-      - [x <+> none = x] *)
+      - [none <|> x = x]
+      - [x <|> none = x] *)
 
   type compile_time
   (** Represents compile-time options. *)
@@ -58,12 +58,21 @@ module Options : sig
   val negate_singleline : compile_time t
   val dont_capture_group : compile_time t
   val capture_group : compile_time t
+  val ignore_is_ascii : compile_time t
+  val word_is_ascii : compile_time t
+  val digit_is_ascii : compile_time t
+  val space_is_ascii : compile_time t
+  val posix_is_ascii : compile_time t
+  val text_segment_extended_grapheme_cluster : compile_time t
+  val text_segment_word : compile_time t
 
   type search_time
   (** Represents search-time options. *)
 
   val notbol : search_time t
   val noteol : search_time t
+  val not_begin_string : search_time t
+  val not_end_string : search_time t
   val not_begin_position : search_time t
 end
 (** Regex options. *)
