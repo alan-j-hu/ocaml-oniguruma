@@ -70,7 +70,19 @@ WRAP(ocaml_get_onig_syntax_gnu_regex, ONIG_SYNTAX_GNU_REGEX)
 WRAP(ocaml_get_onig_syntax_java, ONIG_SYNTAX_JAVA)
 WRAP(ocaml_get_onig_syntax_perl, ONIG_SYNTAX_PERL)
 WRAP(ocaml_get_onig_syntax_perl_ng, ONIG_SYNTAX_PERL_NG)
+WRAP(ocaml_get_onig_syntax_ruby, ONIG_SYNTAX_RUBY)
+WRAP(ocaml_get_onig_syntax_python, ONIG_SYNTAX_PYTHON)
+WRAP(ocaml_get_onig_syntax_oniguruma, ONIG_SYNTAX_ONIGURUMA)
 WRAP(ocaml_get_onig_syntax_default, ONIG_SYNTAX_DEFAULT)
+
+CAMLprim value ocaml_onig_set_default_syntax(value syntax)
+{
+    CAMLparam1(syntax);
+
+    onig_set_default_syntax(*((OnigSyntaxType**)Data_abstract_val(syntax)));
+
+    CAMLreturn(Val_unit);
+}
 
 static void finalize_regex_t(value v) { onig_free(Regex_val(v)); }
 

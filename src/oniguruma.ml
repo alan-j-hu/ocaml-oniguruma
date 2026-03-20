@@ -58,45 +58,46 @@ end
 module Syntax = struct
   type t
 
-  external get_asis : unit -> t =
-    "ocaml_get_onig_syntax_asis"
+  external get_asis : unit -> t = "ocaml_get_onig_syntax_asis"
   let asis = get_asis ()
 
-  external get_posix_basic : unit -> t =
-    "ocaml_get_onig_syntax_posix_basic"
+  external get_posix_basic : unit -> t = "ocaml_get_onig_syntax_posix_basic"
   let posix_basic = get_posix_basic ()
 
   external get_posix_extended : unit -> t =
     "ocaml_get_onig_syntax_posix_extended"
   let posix_extended = get_posix_extended ()
 
-  external get_emacs : unit -> t =
-    "ocaml_get_onig_syntax_emacs"
+  external get_emacs : unit -> t = "ocaml_get_onig_syntax_emacs"
   let emacs = get_emacs ()
 
-  external get_grep : unit -> t =
-    "ocaml_get_onig_syntax_grep"
+  external get_grep : unit -> t = "ocaml_get_onig_syntax_grep"
   let grep = get_grep ()
 
-  external get_gnu_regex : unit -> t =
-    "ocaml_get_onig_syntax_gnu_regex"
+  external get_gnu_regex : unit -> t = "ocaml_get_onig_syntax_gnu_regex"
   let gnu_regex = get_gnu_regex ()
 
-  external get_java : unit -> t =
-    "ocaml_get_onig_syntax_java"
+  external get_java : unit -> t = "ocaml_get_onig_syntax_java"
   let java = get_java ()
 
-  external get_perl : unit -> t =
-    "ocaml_get_onig_syntax_perl"
+  external get_perl : unit -> t = "ocaml_get_onig_syntax_perl"
   let perl = get_perl ()
 
-  external get_perl_ng : unit -> t =
-    "ocaml_get_onig_syntax_perl_ng"
+  external get_perl_ng : unit -> t = "ocaml_get_onig_syntax_perl_ng"
   let perl_ng = get_perl_ng ()
 
-  external get_default : unit -> t =
-    "ocaml_get_onig_syntax_default"
-  let default = get_default ()
+  external get_ruby : unit -> t = "ocaml_get_onig_syntax_ruby"
+  let ruby = get_ruby ()
+
+  external get_python : unit -> t = "ocaml_get_onig_syntax_python"
+  let python = get_python ()
+
+  external get_oniguruma : unit -> t = "ocaml_get_onig_syntax_oniguruma"
+  let oniguruma = get_oniguruma ()
+
+  external default : unit -> t = "ocaml_get_onig_syntax_default"
+
+  external set_default : t -> unit = "ocaml_onig_set_default_syntax"
 end
 
 module Region = struct

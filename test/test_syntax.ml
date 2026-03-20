@@ -11,9 +11,20 @@ let re syn str =
 
 let test_syn_match syn regex str =
   match Oniguruma.match_ (re syn regex) str 0 Oniguruma.Options.none with
-  | None -> assert false
-  | Some _ -> ()
+  | Some _ -> true
+  | _ -> false
 
 let () =
-  test_syn_match Oniguruma.Syntax.asis "()" "()";
-  test_syn_match Oniguruma.Syntax.asis "[a-b]" "[a-b]"
+  assert (test_syn_match Oniguruma.Syntax.oniguruma "[a-b]" "a");
+  assert (not (test_syn_match Oniguruma.Syntax.oniguruma "[a-b]" "[a-b]"));
+  assert (test_syn_match Oniguruma.Syntax.asis "()" "()");
+  assert (test_syn_match Oniguruma.Syntax.asis "[a-b]" "[a-b]");
+  Oniguruma.Syntax.set_default Oniguruma.Syntax.asis;
+  assert (test_syn_match (Oniguruma.Syntax.default ()) "[a-b]" "[a-b]");
+  Oniguruma.Syntax.set_default Oniguruma.Syntax.grep;
+  assert (test_syn_match (Oniguruma.Syntax.default ()) "a+a" "a+a");
+  assert (not (test_syn_match (Oniguruma.Syntax.default ()) "a+a" "aa"));
+  assert (test_syn_match (Oniguruma.Syntax.default ()) "a\\+a" "aa");
+  Oniguruma.Syntax.set_default Oniguruma.Syntax.oniguruma;
+  assert (test_syn_match (Oniguruma.Syntax.default ()) "a+a" "aa");
+  assert (not (test_syn_match (Oniguruma.Syntax.default ()) "a+a" "a+a"))

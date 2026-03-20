@@ -81,7 +81,12 @@ module Syntax : sig
   val java : t
   val perl : t
   val perl_ng : t
-  val default : t
+  val ruby : t
+  val python : t
+  val oniguruma : t
+  val default : unit -> t
+
+  val set_default : t -> unit
 end
 (** The syntax type. *)
 
