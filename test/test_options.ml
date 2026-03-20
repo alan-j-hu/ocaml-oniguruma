@@ -58,4 +58,7 @@ let () =
   neg_test_match_ascii none notbol "^a$" 0 "a";
   neg_test_match_ascii none noteol "^a$" 0 "a";
   neg_test_match_ascii none (notbol <+> noteol) "^a$" 0 "a";
-  neg_test_match_ascii none (noteol <+> notbol) "^a$" 0 "a"
+  neg_test_match_ascii none (noteol <+> notbol) "^a$" 0 "a";
+
+  test_match_ascii none none "\\GA" 1 "(AB)" [1, 2];
+  neg_test_match_ascii none not_begin_position "\\Gab" 1 "(AB)"
