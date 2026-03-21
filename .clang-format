@@ -2,7 +2,7 @@
 BasedOnStyle: LLVM
 IndentWidth: 4
 ---
-Language: Cpp
+Language: C
 DerivePointerAlignment: false
 PointerAlignment: Left
 AlignAfterOpenBracket: AlwaysBreak

@@ -357,10 +357,7 @@ CAMLprim value ocaml_onig_num_captures(value regex_val)
     CAMLreturn(Val_int(onig_number_of_captures(regex)));
 }
 
-static void finalize_regset(value v)
-{
-    onig_regset_free(RegSet_val(v));
-}
+static void finalize_regset(value v) { onig_regset_free(RegSet_val(v)); }
 
 static struct custom_operations regset_ops = {
     .identifier = "oniguruma.RegSet.t",
@@ -401,8 +398,7 @@ CAMLprim value ocaml_onig_regset_of_list(value list)
         free(array);
 
         UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-        const int error_length =
-            onig_error_code_to_str(err_buf, result);
+        const int error_length = onig_error_code_to_str(err_buf, result);
         error_val = caml_copy_string((const char*)err_buf);
 
         /* Must store all fields immediately after small allocation! */
@@ -439,10 +435,8 @@ CAMLprim value ocaml_onig_regset_add(value regset_val, value regex_val)
     CAMLreturn(Val_unit);
 }
 
-CAMLprim value ocaml_onig_regset_replace(
-    value regset_val,
-    value idx_val,
-    value regex_val)
+CAMLprim value
+ocaml_onig_regset_replace(value regset_val, value idx_val, value regex_val)
 {
     CAMLparam3(regset_val, idx_val, regex_val);
 
@@ -453,8 +447,7 @@ CAMLprim value ocaml_onig_regset_replace(
     int count = onig_regset_number_of_regex(regset);
     if (idx < 0 || idx >= count) {
         caml_raise_with_string(
-            *ocaml_onig_Error_exn,
-            "RegSet.replace: idx out of bounds!");
+            *ocaml_onig_Error_exn, "RegSet.replace: idx out of bounds!");
     }
 
     regex_t* old = onig_regset_get_regex(regset, idx);
@@ -475,8 +468,7 @@ CAMLprim value ocaml_onig_regset_remove(value regset_val, value idx_val)
     int count = onig_regset_number_of_regex(regset);
     if (idx < 0 || idx >= count) {
         caml_raise_with_string(
-            *ocaml_onig_Error_exn,
-            "RegSet.remove: idx out of bounds!");
+            *ocaml_onig_Error_exn, "RegSet.remove: idx out of bounds!");
     }
 
     regex_t* old = onig_regset_get_regex(regset, idx);
@@ -541,12 +533,7 @@ CAMLprim value ocaml_onig_regset_search_native(
 CAMLprim value ocaml_onig_regset_search_bytecode(value* argv, int argn)
 {
     return ocaml_onig_regset_search_native(
-        argv[0],
-        argv[1],
-        argv[2],
-        argv[3],
-        argv[4],
-        argv[5]);
+        argv[0], argv[1], argv[2], argv[3], argv[4], argv[5]);
 }
 
 CAMLprim value
