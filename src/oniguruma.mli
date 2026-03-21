@@ -130,9 +130,10 @@ external search
   : 'enc t -> string -> int -> int -> Options.search_time Options.t
   -> Region.t option
   = "ocaml_onig_search"
-(** [search regex string start range option] searches
-    [String.sub string start range] for [regex]. Raises {!exception:Error} if
-    there is an error (other than a mismatch).
+(** [search regex string start range option] searches [string] within the
+    substring given by indices \[start, range) for [regex]. Raises
+    {!exception:Error} if there is an error (other than a negative search
+    result).
 
     @param regex The pattern to search for
     @param string The string to search
@@ -143,14 +144,70 @@ external search
 external match_
   : 'enc t -> string -> int -> Options.search_time Options.t -> Region.t option
   = "ocaml_onig_match"
-(** [match_ regex string pos options] matches [regex] against [string] at
+(** [match_ regex string pos options] matches [string] against [regex] at
     position [pos]. Raises {!exception:Error} if there is an error (other than
-    a mismatch).
+    a negative match).
 
     @param regex The pattern to match
     @param string The string to match against
     @param pos The position of the string to match at, as a byte offset
     @param options Match options *)
+
+module RegSet : sig
+  type 'enc regex = 'enc t
+  type 'enc t
+
+  type lead =
+    | POSITION_LEAD
+    | REGEX_LEAD
+    | PRIORITY_TO_REGEX_ORDER
+
+  external of_list : 'enc regex list -> ('enc t, string) result =
+    "ocaml_onig_regset_of_list"
+  (** [of_list res] constructs a new regset from the list of regexes [res].
+      After calling this function, the regexes in [res] can no longer be
+      used. *)
+
+  external number_of_regex : 'enc t -> int = "ocaml_onig_number_of_regex"
+
+  external add : 'enc t -> 'enc regex -> unit = "ocaml_onig_regset_add"
+  (** [add regset re] adds [re] to the end of the given regset. After calling
+      this function, [re] can no longer be used. *)
+
+  external replace : 'enc t -> int -> 'enc regex -> unit =
+    "ocaml_onig_regset_replace"
+  (** [replace regset idx re] replaces the regex [re] at index [idx] in the
+      regset [regset]. After calling this function, [re] is overwritten with
+      the regex formerly at index [idx] in [regset].  *)
+
+  external remove : 'enc t -> int -> 'enc regex = "ocaml_onig_regset_remove"
+  (** [remove regset idx] removes the regex at index [idx] in the regset
+      [regset]. After calling this function, the indices of all subsequent
+      regexes are shifted down.
+
+      Returns the old regex. *)
+
+  external search
+    : 'enc t -> string -> int -> int -> lead
+    -> Options.search_time Options.t -> (int * Region.t) option
+    = "ocaml_onig_regset_search_bytecode" "ocaml_onig_regset_search_native"
+    (** [let idx, region = search regset string start range lead options]
+        searches [string] within the substring given by \[start, range) and
+        returns the index [idx] of the matching regex and its region [region].
+        Raises {!exception:Error} if there is an error (other than a negative
+        search result).
+
+        The region [region] may outlast the lifetime of [regset].
+
+        @param regset The regset to search use
+        @param string The string to search
+        @param start The string position to start searching from, as a byte
+          offset
+        @param range The string position to stop searching at, as a byte offset
+        @param lead The lead (see {!type:lead})
+        @param option Search options *)
+end
+(** Regsets. *)
 
 external num_captures : _ t -> int = "ocaml_onig_num_captures"
 (** The number of capture groups in the regex. The entire match itself does

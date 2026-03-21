@@ -7,12 +7,10 @@ external initialize : unit -> unit = "ocaml_onig_initialize"
 external cleanup : unit -> unit = "ocaml_onig_end"
 
 let () =
-  Callback.register_exception
-    "Oniguruma.Error" (Error "");
+  Callback.register_exception "Oniguruma.Error" (Error "");
   Callback.register_exception
     "Oniguruma.Invalid_argument" (Invalid_argument "");
-  Callback.register_exception
-    "Oniguruma.Failure" (Failure "");
+  Callback.register_exception "Oniguruma.Failure" (Failure "");
   initialize ();
   at_exit cleanup
 
@@ -132,6 +130,33 @@ external search
 external match_
   : 'enc t -> string -> int -> Options.search_time Options.t -> Region.t option
   = "ocaml_onig_match"
+
+module RegSet = struct
+  type 'a regex = 'a t
+  type _ t
+
+  type lead =
+    | POSITION_LEAD
+    | REGEX_LEAD
+    | PRIORITY_TO_REGEX_ORDER
+
+  external of_list : 'enc regex list -> ('enc t, string) result =
+    "ocaml_onig_regset_of_list"
+
+  external number_of_regex : 'enc t -> int = "ocaml_onig_number_of_regex"
+
+  external add : 'enc t -> 'enc regex -> unit = "ocaml_onig_regset_add"
+
+  external replace : 'enc t -> int -> 'enc regex -> unit =
+    "ocaml_onig_regset_replace"
+
+  external remove : 'enc t -> int -> 'enc regex = "ocaml_onig_regset_remove"
+
+  external search
+    : 'enc t -> string -> int -> int -> lead
+    -> Options.search_time Options.t -> (int * Region.t) option
+    = "ocaml_onig_regset_search_bytecode" "ocaml_onig_regset_search_native"
+end
 
 external num_captures : _ t -> int = "ocaml_onig_num_captures"
 
