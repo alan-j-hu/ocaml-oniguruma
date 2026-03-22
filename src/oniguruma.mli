@@ -156,6 +156,9 @@ external match_
 module RegSet : sig
   type 'enc regex = 'enc t
   type 'enc t
+  (** Regset values {!type:RegSet.t} take ownership of their underlying regex
+      objects: Once added to a regset, {!type:RegSet.regex} values enter a
+      null state and can no longer be used. *)
 
   type lead =
     | POSITION_LEAD
@@ -172,7 +175,9 @@ module RegSet : sig
 
   external add : 'enc t -> 'enc regex -> unit = "ocaml_onig_regset_add"
   (** [add regset re] adds [re] to the end of the given regset. After calling
-      this function, [re] can no longer be used. *)
+      this function, [re] can no longer be used.
+
+      Raises {!exception:Error} for errors. *)
 
   external replace : 'enc t -> int -> 'enc regex -> unit =
     "ocaml_onig_regset_replace"
