@@ -3,17 +3,17 @@ opam-version: "2.0"
 version: "0.1.2"
 synopsis: "Bindings to the Oniguruma regular expression library"
 description: "Bindings to the Oniguruma regular expression library."
-maintainer: ["Alan Hu <alanh@ccs.neu.edu>"]
-authors: ["Alan Hu <alanh@ccs.neu.edu>"]
+maintainer: ["Alan Hu <ahulambda@gmail.com>"]
+authors: ["Alan Hu <ahulambda@gmail.com>"]
 license: "BSD-2-Clause"
 tags: ["regex"]
 homepage: "https://github.com/alan-j-hu/ocaml-oniguruma"
 doc: "https://v3.ocaml.org/p/oniguruma/"
 bug-reports: "https://github.com/alan-j-hu/ocaml-oniguruma/issues"
 depends: [
-  "dune" {>= "2.7"}
   "conf-oniguruma" {= "1"}
   "ocaml" {>= "4.08"}
+  "dune" {>= "2.7" & >= "2.9"}
   "dune-configurator" {>= "2.9" & build}
   "odoc" {with-doc}
 ]

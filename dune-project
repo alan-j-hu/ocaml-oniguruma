@@ -1,8 +1,8 @@
 (lang dune 2.7)
 (generate_opam_files true)
 (version 0.1.2)
-(authors "Alan Hu <alanh@ccs.neu.edu>")
-(maintainers "Alan Hu <alanh@ccs.neu.edu>")
+(authors "Alan Hu <ahulambda@gmail.com>")
+(maintainers "Alan Hu <ahulambda@gmail.com>")
 (license BSD-2-Clause)
 (documentation https://v3.ocaml.org/p/oniguruma/)
 (source (github alan-j-hu/ocaml-oniguruma))
@@ -16,4 +16,5 @@
  (depends
   (conf-oniguruma (= 1))
   (ocaml (>= 4.08))
+  (dune (>= 2.9))
   (dune-configurator (and (>= 2.9) :build))))
