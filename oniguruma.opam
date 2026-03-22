@@ -12,7 +12,7 @@ doc: "https://v3.ocaml.org/p/oniguruma/"
 bug-reports: "https://github.com/alan-j-hu/ocaml-oniguruma/issues"
 depends: [
   "conf-oniguruma" {= "1"}
-  "ocaml" {>= "4.08"}
+  "ocaml" {>= "4.12"}
   "dune" {>= "2.7" & >= "2.9"}
   "dune-configurator" {>= "2.9" & build}
   "odoc" {with-doc}

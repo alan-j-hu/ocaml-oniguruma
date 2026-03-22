@@ -1,5 +1,6 @@
 # 0.2.0 (March 22, 2026)
 
+- [Breaking Change] Update minimum required OCaml version to 4.12.
 - [Breaking Change] Change option composition operator from `<+>` to `<|>`.
 - [Breaking Change] Change type signature of `Syntax.default` from `Syntax.t`
   to `unit -> Syntax.t`.
