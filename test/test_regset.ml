@@ -66,7 +66,7 @@ let test_regset_add_remove () =
       let _ = Oniguruma.RegSet.remove regset idx in
       false
     with
-    | Oniguruma.Error _ -> true
+    | Invalid_argument _ -> true
   in
   assert (try_remove_out_of_bounds 0);
   let re1 = re_utf8 "ABC" in
@@ -96,10 +96,11 @@ let () =
   let re2' = test_regset () in
   test_regset_add_remove();
   Gc.major ();
-  begin match Oniguruma.match_ re3 "123" 0 Oniguruma.Options.none with
+  let () =
+    match Oniguruma.match_ re3 "123" 0 Oniguruma.Options.none with
     | None | Some _ -> assert false
     | exception Oniguruma.Error _ -> ()
-  end;
+  in
   match Oniguruma.match_ re2' "abcdef" 0 Oniguruma.Options.none with
   | None -> assert false
   | Some region ->

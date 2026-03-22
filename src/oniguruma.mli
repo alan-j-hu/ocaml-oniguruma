@@ -178,14 +178,20 @@ module RegSet : sig
     "ocaml_onig_regset_replace"
   (** [replace regset idx re] replaces the regex [re] at index [idx] in the
       regset [regset]. After calling this function, [re] is overwritten with
-      the regex formerly at index [idx] in [regset].  *)
+      the regex formerly at index [idx] in [regset].
+
+      Raises {!exception:Invalid_argument} if [idx] is out of bounds and
+      {!exception:Error} for any other error. *)
 
   external remove : 'enc t -> int -> 'enc regex = "ocaml_onig_regset_remove"
   (** [remove regset idx] removes the regex at index [idx] in the regset
       [regset]. After calling this function, the indices of all subsequent
       regexes are shifted down.
 
-      Returns the old regex. *)
+      Returns the old regex.
+
+      Raises {!exception:Invalid_argument} if [idx] is out of bounds and
+      {!exception:Error} for any other error. *)
 
   external search
     : 'enc t -> string -> int -> int -> lead

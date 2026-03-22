@@ -27,6 +27,17 @@ static const value* ocaml_onig_Error_exn = NULL;
 static const value* ocaml_Invalid_argument_exn = NULL;
 static const value* ocaml_Failure_exn = NULL;
 
+void ocaml_raise_onig_error(int error_code)
+{
+    UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
+    onig_error_code_to_str(err_buf, error_code);
+    if (error_code == ONIGERR_INVALID_ARGUMENT) {
+        caml_raise_with_string(
+            *ocaml_Invalid_argument_exn, (const char*)err_buf);
+    }
+    caml_raise_with_string(*ocaml_onig_Error_exn, (const char*)err_buf);
+}
+
 CAMLprim value ocaml_onig_initialize(value unit)
 {
     CAMLparam1(unit);
@@ -266,10 +277,8 @@ CAMLprim value ocaml_onig_search(
         CAMLreturn(Val_int(0));
     }
     if (result < 0) {
-        UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-        onig_error_code_to_str(err_buf, result);
         onig_region_free(region, 1);
-        caml_raise_with_string(*ocaml_onig_Error_exn, (const char*)err_buf);
+        ocaml_raise_onig_error(result);
     }
     construct_region_val(&region_val, region);
     /* option_val : Region.t option */
@@ -307,10 +316,8 @@ CAMLprim value ocaml_onig_match(
         CAMLreturn(Val_none);
     }
     if (result < 0) {
-        UChar err_buf[ONIG_MAX_ERROR_MESSAGE_LEN];
-        onig_error_code_to_str(err_buf, result);
         onig_region_free(region, 1);
-        caml_raise_with_string(*ocaml_onig_Error_exn, (const char*)err_buf);
+        ocaml_raise_onig_error(result);
     }
     construct_region_val(&region_val, region);
     /* option_val : region option */
@@ -430,7 +437,12 @@ CAMLprim value ocaml_onig_regset_add(value regset_val, value regex_val)
 {
     CAMLparam2(regset_val, regex_val);
     regex_t* regex = get_regex(regex_val);
-    onig_regset_add(RegSet_val(regset_val), regex);
+
+    int error_code = onig_regset_add(RegSet_val(regset_val), regex);
+    if (error_code < 0) {
+        ocaml_raise_onig_error(error_code);
+    }
+
     Regex_val(regex_val) = NULL;
     CAMLreturn(Val_unit);
 }
@@ -447,11 +459,16 @@ ocaml_onig_regset_replace(value regset_val, value idx_val, value regex_val)
     int count = onig_regset_number_of_regex(regset);
     if (idx < 0 || idx >= count) {
         caml_raise_with_string(
-            *ocaml_onig_Error_exn, "RegSet.replace: idx out of bounds!");
+            *ocaml_Invalid_argument_exn, "RegSet.replace: idx out of bounds!");
     }
 
     regex_t* old = onig_regset_get_regex(regset, idx);
-    onig_regset_replace(regset, idx, regex);
+
+    int error_code = onig_regset_replace(regset, idx, regex);
+    if (error_code < 0) {
+        ocaml_raise_onig_error(error_code);
+    }
+
     Regex_val(regex_val) = old;
 
     CAMLreturn(Val_unit);
@@ -468,11 +485,15 @@ CAMLprim value ocaml_onig_regset_remove(value regset_val, value idx_val)
     int count = onig_regset_number_of_regex(regset);
     if (idx < 0 || idx >= count) {
         caml_raise_with_string(
-            *ocaml_onig_Error_exn, "RegSet.remove: idx out of bounds!");
+            *ocaml_Invalid_argument_exn, "RegSet.remove: idx out of bounds!");
     }
 
     regex_t* old = onig_regset_get_regex(regset, idx);
-    onig_regset_replace(regset, idx, NULL);
+
+    int error_code = onig_regset_replace(regset, idx, NULL);
+    if (error_code < 0) {
+        ocaml_raise_onig_error(error_code);
+    }
 
     construct_regex_val(&old_regex_val, old);
 
